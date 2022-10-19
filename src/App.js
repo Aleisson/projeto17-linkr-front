@@ -1,6 +1,6 @@
 import "./css/reset.css";
 import "./css/style.css";
-import { BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
+import { BrowserRouter, Routes, Route} from "react-router-dom";
 import Signin from "./elements/Signin";
 import Signup from "./elements/Signup";
 import Home from "./elements/Home";
@@ -10,10 +10,9 @@ export default function App(){
     <>
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Navigate to="/sign-in" />}/>
-        <Route path="/sign-in" element={<Signin/>}/>
+        <Route path="/" element={<Signin/>}/>
         <Route path="/sign-up" element={<Signup/>}/>
-        <Route path="/home" element={<Home/>}/>
+        <Route path="/timeline" element={<Home/>}/>
       </Routes>
     </BrowserRouter>
     </>

@@ -1,3 +1,5 @@
+import "./css/reset.css";
+import "./css/style.css";
 import { BrowserRouter, Routes, Route, Navigate} from "react-router-dom";
 import Signin from "./elements/Signin";
 import Signup from "./elements/Signup";

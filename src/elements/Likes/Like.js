@@ -1,10 +1,11 @@
 import styled from "styled-components";
-import { BsFillHeartFill } from 'react-icons/bs';
+import { BsFillHeartFill, BsHeart } from 'react-icons/bs';
 function Like() {
 
     return (
         <StyledDiv>
-            <h1><CustomBsFillHeartFill /></h1>
+            <h1><CustomBsFillHeart /></h1>
+            <h1><CustomBsHeart /></h1>
         </StyledDiv>
     )
 
@@ -12,7 +13,7 @@ function Like() {
 }
 const StyledDiv = styled.div`
 
-    background-color: #FFFFFF;
+    //background-color: #FFFFFF;
     margin: 12vw auto;
     width: 200px;
     height: 200px;
@@ -21,8 +22,15 @@ const StyledDiv = styled.div`
     justify-content: center;
 
 `
-const CustomBsFillHeartFill = styled(BsFillHeartFill)`
 
+
+const CustomBsHeart = styled(BsHeart)`
+    font-size: 32px;
+    color: white;
+`
+const CustomBsFillHeart = styled(BsFillHeartFill)`
+    color: #AC0000;
+    font-size: 32px;
 `
 
 export { Like };

@@ -1,13 +1,23 @@
 import styled from "styled-components";
 import { useState } from "react";
 import { BsFillHeartFill, BsHeart } from 'react-icons/bs';
+import * as services from '../../services/linkr.Services.js';
+
 function Like() {
 
-    function GiveLike({ button }) {
+    function GiveLike({ button, postId, token }) {
         if (button) {
-            return <CustomBsFillHeart  />
+            console.log(`Give like userId = ${postId} token = ${token}`);
+            const promise = services.postLike(postId,token);
+            promise.catch((error) => console.error(error));
+            
+
+            return <CustomBsFillHeart onClick={() => setButton((button => !button))} />
         }
-        return <CustomBsHeart />
+
+
+
+        return <CustomBsHeart onClick={() => setButton((button => !button))} />
 
     }
 
@@ -15,9 +25,9 @@ function Like() {
 
     return (
 
-        <StyledDiv onClick={() => setButton((button => !button))}>
+        <StyledDiv >
 
-            <GiveLike button={button} />
+            <GiveLike button={button} postId={1} token={'token'} />
 
         </StyledDiv>
     )
@@ -26,10 +36,10 @@ function Like() {
 }
 const StyledDiv = styled.div`
 
-    //background-color: #FF16;
+    background-color: grey;
     margin: 12vw auto;
-    width: 32px;
-    height: auto;
+    width: auto;
+    height: 12vw;
     display:flex;
     align-items:center;
     justify-content: center;

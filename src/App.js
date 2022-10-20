@@ -1,5 +1,5 @@
-import ".assets/css/reset.css";
-import ".assets/css/style.css";
+import "./assets/css/reset.css";
+import "./assets/css/style.css";
 import { BrowserRouter, Routes, Route} from "react-router-dom";
 import SignIn from "./elements/SignIn";
 import SignUp from "./elements/SignUp";

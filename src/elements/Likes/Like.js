@@ -1,12 +1,24 @@
 import styled from "styled-components";
-import { useState, Pressable } from "react";
+import { useState } from "react";
 import { BsFillHeartFill, BsHeart } from 'react-icons/bs';
 function Like() {
 
-    const [Liked, setLiked] = useState(<CustomBsHeart />);
+    function GiveLike({ button }) {
+        if (button) {
+            return <CustomBsFillHeart  />
+        }
+        return <CustomBsHeart />
+
+    }
+
+    const [button, setButton] = useState(false);
+
     return (
-        <StyledDiv>
-            <h1>{Liked}</h1>
+
+        <StyledDiv onClick={() => setButton((button => !button))}>
+
+            <GiveLike button={button} />
+
         </StyledDiv>
     )
 
@@ -14,10 +26,10 @@ function Like() {
 }
 const StyledDiv = styled.div`
 
-    //background-color: #FFFFFF;
+    //background-color: #FF16;
     margin: 12vw auto;
-    width: 200px;
-    height: 200px;
+    width: 32px;
+    height: auto;
     display:flex;
     align-items:center;
     justify-content: center;

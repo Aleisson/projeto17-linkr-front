@@ -1,11 +1,12 @@
 import styled from "styled-components";
+import { useState, Pressable } from "react";
 import { BsFillHeartFill, BsHeart } from 'react-icons/bs';
 function Like() {
 
+    const [Liked, setLiked] = useState(<CustomBsHeart />);
     return (
         <StyledDiv>
-            <h1><CustomBsFillHeart /></h1>
-            <h1><CustomBsHeart /></h1>
+            <h1>{Liked}</h1>
         </StyledDiv>
     )
 

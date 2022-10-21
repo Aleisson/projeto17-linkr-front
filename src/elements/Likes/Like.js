@@ -6,15 +6,22 @@ import * as services from '../../services/linkr.Services.js';
 function Like() {
 
     function GiveLike({ button, postId, token }) {
+
+
         if (button) {
-            console.log(`Give like userId = ${postId} token = ${token}`);
-            const promise = services.postLike(postId,token);
+
+            const promise = services.postLike(postId, token);
+
             promise.catch((error) => console.error(error));
-            
+
 
             return <CustomBsFillHeart onClick={() => setButton((button => !button))} />
         }
 
+
+        const promise = services.deleteLike(postId, token);
+
+        promise.catch((error) => console.error(error));
 
 
         return <CustomBsHeart onClick={() => setButton((button => !button))} />

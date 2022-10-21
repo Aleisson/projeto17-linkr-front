@@ -2,8 +2,19 @@ import styled from "styled-components";
 import Post from "./Post";
 import Topbar from "./Topbar";
 import Trending from "./Trending";
+import axios from "axios";
+import TokenContext from "../contexts/TokenContext";
+import { useContext, useEffect, useState } from "react";
+import routes from "../backendroutes";
 
 export default function Home(){
+    const {token} = useContext(TokenContext);
+    const [posts,setPosts] = useState([]);
+    useEffect(()=>{
+        axios.get(routes.GET_POSTS, {headers: { Authorization: "token" }}).then((res)=>{setPosts(res.data)})
+        .catch((err)=>{console.error(err)});
+    });
+
     return (
         <>
         <Topbar/>
@@ -13,8 +24,7 @@ export default function Home(){
             </TOPTIMELINE>
             <TIMELINE>
                 <POSTS>
-                    <Post/>
-                    <Post/>
+                    {posts.map((item,index)=>{return <Post key={index} content={item.content} link={item.link} url={item.pictureUrl} username={item.username}/>})}
                 </POSTS>
                 <Trending/>
             </TIMELINE>

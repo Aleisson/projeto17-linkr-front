@@ -1,19 +1,49 @@
 import styled from "styled-components";
+import mql from '@microlink/mql'
+import { useEffect, useState } from "react";
+import {Pencil,Trash3Fill,Heart} from "react-bootstrap-icons";
 
 export default function Post({content,link,url,username}){
+    const [image,setImage] = useState(Object);
+    const [info,setInfo] = useState(Object);
+    const openInNewTab = url => {
+    window.open(url, '_blank', 'noopener,noreferrer');
+    }
+    useEffect(()=>{
+        mql(link).then((res)=>{
+            setImage(res.data.logo)
+            setInfo({
+                title: res.data.title,
+                description: res.data.description,
+                url: res.data.url
+            });
+        }).catch((err)=>{console.error(err)});
+    },[]);
     return(
         <>
         <CONTENT>
             <LEFT>
                 <USERIMAGE src={url}/>
+                <Heart size={23} color="#FFFFFF"/>
             </LEFT>
             <RIGTH>
                 <INFOS>
-                    <NAME>{username}</NAME>
+                    <NAME>
+                        {username}
+                        <EDIT>
+                            <Pencil size={23} color="#FFFFFF"/>
+                            <Trash3Fill size={23} color="#FFFFFF"/>
+                        </EDIT>
+                    </NAME>
                     <DESCRIPTION><p>{content}aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p></DESCRIPTION>
                 </INFOS>
-                <LINK>
-                    {link}
+                <LINK onClick={()=>{openInNewTab(link)}}>
+                    <INFOSLINK>
+                        <TITLE>{info.title}</TITLE>
+                        <DESC>{info.description}</DESC>
+                        <URL>{info.url}</URL>
+                    </INFOSLINK>
+                    <LOGOSITE alt="logo" src={image.url}/>
                 </LINK>
             </RIGTH>
         </CONTENT>
@@ -36,29 +66,31 @@ const LEFT = styled.div`
     align-items: center;
     width: 14%;
     height: 100%;
-    background-color: aqua;
 `;
 const RIGTH = styled.div`
     width: 86%;
     height: 100%;
-    background-color: palegreen;
 `;
 const LINK = styled.div`
+    display: flex;
     height: 155px;
     width: 100%;
-    background-color: red;
+    border: 1px solid #4d4d4d;
+    border-radius: 12px;
 `;
 const INFOS = styled.div`
     height: calc(100% - 155px);
     width: 100%;
-    background-color: greenyellow;
 `;
 const NAME = styled.div`
     display: flex;
     align-items: center;
+    justify-content: space-between;
     height: 25px;
     width: 100%;
-    background-color: blueviolet;
+    font-family: 'Lato', sans-serif;
+    font-size: 19px;
+    color: #FFFFFF;
 `;
 const DESCRIPTION = styled.div`
     display: flex;
@@ -66,10 +98,44 @@ const DESCRIPTION = styled.div`
     height: calc(100% - 25px);
     width: 100%;
     word-break: break-all;
-    background-color: aquamarine;
+    font-family: 'Lato', sans-serif;
+    color: #b7b7b7;
+    font-size: 17px;
 `;
 const USERIMAGE = styled.img`
     width: 50px;
     height: 50px;
     border-radius: 27px;
+    margin-bottom: 20px;
+`;
+const INFOSLINK = styled.div`
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    width: calc(100% - 155px);
+    height: 100%;
+    padding: 20px 20px 20px 20px;
+    font-family: 'Lato', sans-serif;
+`;
+const LOGOSITE = styled.img`
+    width: 155px;
+    height: 155px;
+    border-radius: 0 12px 12px 0;
+`;
+const TITLE = styled.p`
+    color: #cecece;
+    font-size: 16px;
+`;
+const DESC = styled.p`
+    color: #9B9595;
+    font-size: 11px;
+`;
+const URL = styled.p`
+    color: #cecece;
+    font-size: 11px;
+`;
+const EDIT = styled.div`
+    display: flex;
+    justify-content: space-between;
+    width: 56px;
 `;

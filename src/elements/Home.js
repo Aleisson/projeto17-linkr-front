@@ -11,7 +11,7 @@ export default function Home(){
     const {token} = useContext(TokenContext);
     const [posts,setPosts] = useState([]);
     useEffect(()=>{
-        axios.get(routes.GET_POSTS, {headers: { Authorization: "token" }}).then((res)=>{setPosts(res.data)})
+        axios.get(routes.GET_POSTS, {headers: { Authorization: token }}).then((res)=>{setPosts(res.data)})
         .catch((err)=>{console.error(err)});
     });
 

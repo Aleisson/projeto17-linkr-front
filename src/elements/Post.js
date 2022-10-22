@@ -37,7 +37,7 @@ export default function Post({content,link,url,username,userid}){
                             <Trash3Fill size={23} color="#FFFFFF"/>
                         </EDIT>
                     </NAME>
-                    <DESCRIPTION><p>{content}aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</p></DESCRIPTION>
+                    <DESCRIPTION><p>{content}</p></DESCRIPTION>
                 </INFOS>
                 <LINK onClick={()=>{openInNewTab(link)}}>
                     <INFOSLINK>

@@ -7,9 +7,11 @@ const StyledDiv = styled.div`
     margin: 12vw auto;
     width: auto;
     height: 12vw;
+    padding: 64px 0;
     display:flex;
+    flex-direction:column;
     align-items:center;
-    justify-content: center;
+    justify-content: space-around;
 
 `
 

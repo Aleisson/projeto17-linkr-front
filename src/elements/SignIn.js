@@ -8,10 +8,11 @@ function SignIn () {
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [disableButton, setDisableButton] = useState(false)
 
     function logar (e) {
         e.preventDefault();
-
+        setDisableButton(true)
         const body = {
             email,
             password
@@ -19,11 +20,16 @@ function SignIn () {
 
         if (email !== '' && password !== '') {
             let response = axios.post("http://localhost:5000", body)
-            response.then(()=> 
-            navigate("/timeline"))
+            response.then(()=> {
+            navigate("/timeline")
+            setDisableButton(false)
+        })
+            response.catch(res => alert(res.response.data))
         } else {
             alert("Preencha todos os campos!")
         }
+
+        
     }
 
     return (
@@ -37,7 +43,7 @@ function SignIn () {
                     <input onChange={(e) => setEmail(e.target.value)} placeholder="e-mail" required value={email}/>
                     <input onChange={(e) => setPassword(e.target.value)} placeholder="password" required value={password} type="password"/>
 
-                    <button onClick={logar}>Sign In</button>
+                    <button disabled={disableButton} onClick={logar}>Sign In</button>
 
                     <Link to="/signup"><h3>First time? Create an account!</h3></Link>
                 </Form>
@@ -180,6 +186,7 @@ const Form = styled.form`
         font-family: 'Oswald', sans-serif;
         font-size: 27px;
         color: #FFFFFF;
+
 
         @media (max-width: 475px) {
             width: 330px;

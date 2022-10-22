@@ -10,10 +10,11 @@ function SignUp () {
     const [password, setPassword] = useState('');
     const [username, setUsername] = useState('');
     const [pictureUrl, setPictureUrl] = useState('');
+    const [disableButton, setDisableButton] = useState(false)
 
     function cadastrar (e) {
         e.preventDefault();
-
+        
         const body = {
             email,
             password,
@@ -22,9 +23,18 @@ function SignUp () {
         }
 
         if (email !== '' && password !== '' && username !== '' && pictureUrl !== '') {
+            setDisableButton(true)
             let response = axios.post("http://localhost:5000/signup", body)
-            console.log(response.data)
-            response.then(() => navigate("/"))
+            
+            response.then(() => {
+                navigate("/")
+                setDisableButton(false)
+            })
+            response.catch(res => {
+                alert(res.response.data)
+                setDisableButton(false)
+            })
+            
         } else {
             alert("Preencha todos os campos!")
         }
@@ -43,7 +53,7 @@ function SignUp () {
                     <input onChange={(e) => setUsername(e.target.value)} placeholder="username" required value={username} />
                     <input onChange={(e) => setPictureUrl(e.target.value)} placeholder="picture url" required value={pictureUrl}/>
 
-                    <button onClick={cadastrar}>Sign Up</button>
+                    <button disabled={disableButton} onClick={cadastrar}>Sign Up</button>
 
                     <Link to="/"><h3>Switch back to log in</h3></Link>
                 </Form>

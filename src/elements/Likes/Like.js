@@ -5,29 +5,14 @@ import * as services from '../../services/linkr.Services.js';
 function Like() {
 
     function GiveLike({ button, postId, token }) {
-
-        useEffect(() => {
-
-        });
-
         if (button) {
-
             const promise = services.postLike(postId, token);
-
             promise.catch((error) => console.error(error));
-
-
             return <CustomBsFillHeart onClick={() => setButton((button => !button))} />
         }
-
-
         const promise = services.deleteLike(postId, token);
-
         promise.catch((error) => console.error(error));
-
-
         return <CustomBsHeart onClick={() => setButton((button => !button))} />
-
     }
 
     

@@ -19,8 +19,26 @@ function deleteLike(postId, token) {
     return promise;
 }
 
+function getLikesUsers(postId) {
+
+    const promise = axios.get(
+        `${BASE_URL}/like/${postId}/users`
+    );
+    return promise;
+}
+
+function getCountLikes(postId) {
+
+    const promise = axios.get(
+        `${BASE_URL}/like/${postId}/count`
+    );
+    return promise;
+}
+
 
 export {
     postLike,
-    deleteLike
+    deleteLike,
+    getLikesUsers,
+    getCountLikes
 }

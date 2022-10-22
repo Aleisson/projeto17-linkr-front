@@ -1,13 +1,17 @@
 import styled from "styled-components";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { BsFillHeartFill, BsHeart } from 'react-icons/bs';
 import * as services from '../../services/linkr.Services.js';
 
 function Like() {
 
+
+
+
     function GiveLike({ button, postId, token }) {
 
 
+      
         if (button) {
 
             const promise = services.postLike(postId, token);

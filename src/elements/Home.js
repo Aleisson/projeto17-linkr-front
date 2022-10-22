@@ -6,13 +6,21 @@ import axios from "axios";
 import TokenContext from "../contexts/TokenContext";
 import { useContext, useEffect, useState } from "react";
 import routes from "../backendroutes";
+import { useParams } from "react-router-dom";
 
 export default function Home(){
     const {token} = useContext(TokenContext);
+    const id = useParams().id;
     const [posts,setPosts] = useState([]);
     useEffect(()=>{
-        axios.get(routes.GET_POSTS, {headers: { Authorization: token }}).then((res)=>{setPosts(res.data)})
-        .catch((err)=>{console.error(err)});
+        if(id){
+            axios.get(routes.GET_POSTS_BYID(id), {headers: { Authorization: "token" }}).then((res)=>{setPosts(res.data)})
+            .catch((err)=>{console.error(err)});
+        }else{
+            axios.get(routes.GET_POSTS, {headers: { Authorization: "token" }}).then((res)=>{setPosts(res.data)})
+            .catch((err)=>{console.error(err)});
+        }
+
     });
 
     return (
@@ -20,11 +28,11 @@ export default function Home(){
         <Topbar/>
         <CONTENT>
             <TOPTIMELINE>
-                timeline
+                {posts.length>0 && id?`${posts[0].username}'s posts`:'timeline'}
             </TOPTIMELINE>
             <TIMELINE>
                 <POSTS>
-                    {posts.map((item,index)=>{return <Post key={index} content={item.content} link={item.link} url={item.pictureUrl} username={item.username}/>})}
+                    {posts.map((item,index)=>{return <Post key={index} content={item.content} link={item.link} url={item.pictureUrl} username={item.username} userid={item.userId}/>})}
                 </POSTS>
                 <Trending/>
             </TIMELINE>

@@ -14,7 +14,7 @@ export default function Home(){
     const [posts,setPosts] = useState([]);
     const [inserturl,setInserturl] = useState("");
     const [insertdesc,setInsertdesc] = useState("");
-    const [userimage,setUserimage] = useState(""); //precisa pegar a url da imagem do usuario atual
+    const [userimage,setUserimage] = useState(""); //precisa pegar a url da imagem do usuario atual.
     useEffect(()=>{
         if(id){
             axios.get(routes.GET_POSTS_BYID(id), {headers: { Authorization: token }}).then((res)=>{setPosts(res.data)})
@@ -30,12 +30,7 @@ export default function Home(){
             url: inserturl,
             complement: insertdesc
         }
-<<<<<<< HEAD
         axios.post(routes.INSERT_POST, senddata,{headers: { Authorization: token }}).catch((err)=>{console.error(err);if(err.request.status===422){alert("Url inválida")}});
-=======
-        axios.post(routes.INSERT_POST, senddata,{headers: { Authorization: token }}).then(()=>{setDisable(false);setRefresh(!refresh);setInsertdesc("");setInserturl("");setButtontext("Publicar");})
-        .catch((err)=>{console.error(err);setDisable(false);setButtontext("Publicar");if(err.request.status===422){alert("Url inválida")}else{alert("Houve um erro ao publicar seu link")}});
->>>>>>> integracao
     }
 
     return (

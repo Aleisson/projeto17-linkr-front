@@ -21,7 +21,7 @@ export default function Home(){
     const [buttontext,setButtontext] = useState("Publicar");
     useEffect(()=>{
         if(id){
-            axios.get(routes.GET_POSTS_BYID(id), {headers: { Authorization: token }}).then((res)=>{(res.data.posts.length)>0?setPosts(res.data.posts):setMessage("There are no posts yet")})
+            axios.get(routes.GET_POSTS_BYID(id), {headers: { Authorization: token }}).then((res)=>{res.data.length>0?setPosts(res.data):setMessage("There are no posts yet")})
             .catch((err)=>{console.error(err);alert("An error occured while trying to fetch the posts, please refresh the page")});
         }else{
             axios.get(routes.GET_POSTS, {headers: { Authorization: token }}).then((res)=>{setUserimage(res.data.user[0].pictureUrl);(res.data.posts.length)>0?setPosts(res.data.posts):setMessage("There are no posts yet")})

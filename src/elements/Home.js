@@ -30,7 +30,12 @@ export default function Home(){
             url: inserturl,
             complement: insertdesc
         }
+<<<<<<< HEAD
         axios.post(routes.INSERT_POST, senddata,{headers: { Authorization: token }}).catch((err)=>{console.error(err);if(err.request.status===422){alert("Url inválida")}});
+=======
+        axios.post(routes.INSERT_POST, senddata,{headers: { Authorization: token }}).then(()=>{setDisable(false);setRefresh(!refresh);setInsertdesc("");setInserturl("");setButtontext("Publicar");})
+        .catch((err)=>{console.error(err);setDisable(false);setButtontext("Publicar");if(err.request.status===422){alert("Url inválida")}else{alert("Houve um erro ao publicar seu link")}});
+>>>>>>> integracao
     }
 
     return (

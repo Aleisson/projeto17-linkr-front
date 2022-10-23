@@ -11,22 +11,6 @@ import { useParams } from "react-router-dom";
 export default function Home() {
     const { token } = useContext(TokenContext);
     const id = useParams().id;
-<<<<<<< HEAD
-    const [posts, setPosts] = useState([]);
-    const [inserturl, setInserturl] = useState("");
-    const [insertdesc, setInsertdesc] = useState("");
-    const [userimage, setUserimage] = useState(""); //precisa pegar a url da imagem do usuario atual
-    useEffect(() => {
-        if (id) {
-            axios.get(routes.GET_POSTS_BYID(id), { headers: { Authorization: token } }).then((res) => { setPosts(res.data) })
-                .catch((err) => { console.error(err) });
-        } else {
-            axios.get(routes.GET_POSTS, { headers: { Authorization: token } }).then((res) => { setPosts(res.data) })
-                .catch((err) => { console.error(err) });
-        }
-    });
-    function handleForm(e) {
-=======
     const [posts,setPosts] = useState([]);
     const [message,setMessage] = useState("Loading...");
     const [inserturl,setInserturl] = useState("");
@@ -45,7 +29,6 @@ export default function Home() {
         }
     },[refresh,id,token]);
     function handleForm(e){
->>>>>>> b6fe9b34e5ddc24bfc53778cf1a5873f0596b244
         e.preventDefault();
         setDisable(true);
         setButtontext("Publishing...")
@@ -53,54 +36,11 @@ export default function Home() {
             url: inserturl,
             complement: insertdesc
         }
-<<<<<<< HEAD
-        axios.post(routes.INSERT_POST, senddata, { headers: { Authorization: token } }).catch((err) => { console.error(err); if (err.request.status === 422) { alert("Url inválida") } });
-=======
         axios.post(routes.INSERT_POST, senddata,{headers: { Authorization: token }}).then(()=>{setDisable(false);setRefresh(!refresh);setInsertdesc("");setInserturl("");setButtontext("Publicar");})
         .catch((err)=>{console.error(err);setDisable(false);setButtontext("Publicar");if(err.request.status===422){alert("Url inválida")}else{alert("Houve um erro ao publicar seu link")}});
->>>>>>> b6fe9b34e5ddc24bfc53778cf1a5873f0596b244
     }
     return (
         <>
-<<<<<<< HEAD
-            <Topbar />
-            <CONTENT>
-                <TOPTIMELINE>
-                    {posts.length > 0 && id ? `${posts[0].username}'s posts` : 'timeline'}
-                </TOPTIMELINE>
-                <TIMELINE>
-                    <POSTS>
-                        {id ? null : <INSERTPOST>
-                            <LEFTPOST>
-                                <USERIMAGE src={userimage} />
-                            </LEFTPOST>
-                            <RIGTHPOST>
-                                <INSERTPOSTMESSAGE>What are you going to share today?</INSERTPOSTMESSAGE>
-                                <FORM onSubmit={handleForm}>
-                                    <INPUT h="30px"
-                                        value={inserturl}
-                                        onChange={(e) => setInserturl(e.target.value)}
-                                        type="text"
-                                        placeholder="http://..."
-                                        required
-                                    />
-                                    <INPUT h="66px"
-                                        value={insertdesc}
-                                        onChange={(e) => setInsertdesc(e.target.value)}
-                                        type="text"
-                                        placeholder="Awesome article about #javascript"
-                                        required
-                                    />
-                                    <BUTTON type="submit">Confirmar</BUTTON>
-                                </FORM>
-                            </RIGTHPOST>
-                        </INSERTPOST>}
-                        {posts.map((item, index) => { return <Post key={index} id={item.id} content={item.content} link={item.link} url={item.pictureUrl} username={item.username} userid={item.userId} token={token} /> })}
-                    </POSTS>
-                    <Trending />
-                </TIMELINE>
-            </CONTENT>
-=======
         <Topbar/>
         <CONTENT>
             <TOPTIMELINE>
@@ -139,7 +79,6 @@ export default function Home() {
                 <Trending/>
             </TIMELINE>
         </CONTENT>
->>>>>>> b6fe9b34e5ddc24bfc53778cf1a5873f0596b244
         </>
     );
 }

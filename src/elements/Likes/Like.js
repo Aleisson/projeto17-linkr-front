@@ -4,20 +4,45 @@ import styled from "styled-components";
 import { CustomBsFillHeart, CustomBsHeart, StyledDiv } from './style/like.Style.js';
 import * as services from '../../services/linkr.Services.js';
 
-function Like() {
+function Like({ postId, token }) {
 
     const [button, setButton] = useState(false);
-    const [count, setCount] = useState(14);
+    const [count, setCount] = useState(0);
+    const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+
+        const promiseCount = services.getCountLikes(1);
+        promiseCount.then(res => setCount(res.data));
+        const promiseUsers = services.getLikesUsers(1);
+        promiseUsers.then(res => {
+            if (res.data.lenght < 2) {
+                return setUsers(res.data);
+            }
+            return setUsers(res.data.slice(0, 2));
+        });
+
+    }, [])
+
+
 
     function GiveLike({ button, postId, token }) {
         if (button) {
+
+            return <CustomBsFillHeart onClick={() => {
+                const promise = services.deleteLike(postId, token);
+                promise.catch((error) => console.error(error));
+                setCount(count - 1);
+                setButton(false);
+            }} />
+        }
+
+        return <CustomBsHeart onClick={() => {
             const promise = services.postLike(postId, token);
             promise.catch((error) => console.error(error));
-            return <CustomBsFillHeart onClick={() => setButton((button => !button))} />
-        }
-        const promise = services.deleteLike(postId, token);
-        promise.catch((error) => console.error(error));
-        return <CustomBsHeart onClick={() => setButton((button => !button))} />
+            setCount(count + 1);
+            setButton(true);
+        }} />
     }
 
     function CountLike({ countLike, usersLike }) {
@@ -32,7 +57,7 @@ function Like() {
                 effect="solid"
                 backgroundColor="#FFFFFF"
                 textColor="#000000">
-                João, jose e mais 11 curtiram
+                {`${users} e outras ${(count - 2) > 0 ? count - 2 : count} pessoas`}
             </ReactTooltip>
         </>
     }
@@ -42,7 +67,7 @@ function Like() {
 
         <StyledDiv >
 
-            <GiveLike button={button} postId={1} token={'token'} />
+            <GiveLike button={button} postId={1} token={123} />
             <CountLike countLike={count}></CountLike>
 
 

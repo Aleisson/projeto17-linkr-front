@@ -15,6 +15,9 @@ function Like({ postId, token }) {
         const promiseCount = services.getCountLikes(1);
         promiseCount.then(res => setCount(res.data));
         const promiseUsers = services.getLikesUsers(1);
+        const promiseLikeMe = services.getLikesMe(1,123);
+        promiseLikeMe.then(res => setButton(res.data));
+
         promiseUsers.then(res => {
             if (res.data.lenght < 2) {
                 return setUsers(res.data);
@@ -32,6 +35,7 @@ function Like({ postId, token }) {
             return <CustomBsFillHeart onClick={() => {
                 const promise = services.deleteLike(postId, token);
                 promise.catch((error) => console.error(error));
+                setUsers(users.filter((x, i) => i > 0))
                 setCount(count - 1);
                 setButton(false);
             }} />
@@ -41,6 +45,7 @@ function Like({ postId, token }) {
             const promise = services.postLike(postId, token);
             promise.catch((error) => console.error(error));
             setCount(count + 1);
+            setUsers(['Você', ...users])
             setButton(true);
         }} />
     }
@@ -57,7 +62,7 @@ function Like({ postId, token }) {
                 effect="solid"
                 backgroundColor="#FFFFFF"
                 textColor="#000000">
-                {`${users} e outras ${(count - 2) > 0 ? count - 2 : count} pessoas`}
+                {`${usersLike[0] ? usersLike[0] : ""}, ${usersLike[1] ? usersLike[1] : ""} e outras ${(count - 2) > 0 ? count - 2 : count} pessoas`}
             </ReactTooltip>
         </>
     }
@@ -68,7 +73,7 @@ function Like({ postId, token }) {
         <StyledDiv >
 
             <GiveLike button={button} postId={1} token={123} />
-            <CountLike countLike={count}></CountLike>
+            <CountLike countLike={count} usersLike={users} ></CountLike>
 
 
 

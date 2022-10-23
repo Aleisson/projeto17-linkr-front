@@ -19,6 +19,16 @@ function deleteLike(postId, token) {
     return promise;
 }
 
+
+async function getLikesMe(postId, token) {
+
+    const promise =  await axios.get(
+        `${BASE_URL}/like/${postId}/me`,
+        filterToken(token)
+    );
+    return promise;
+}
+
 async function getLikesUsers(postId) {
 
     const promise =  await axios.get(
@@ -39,6 +49,7 @@ function getCountLikes(postId) {
 export {
     postLike,
     deleteLike,
+    getLikesMe,
     getLikesUsers,
     getCountLikes
 }

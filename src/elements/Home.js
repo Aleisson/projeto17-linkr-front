@@ -8,70 +8,70 @@ import { useContext, useEffect, useState } from "react";
 import routes from "../backendroutes";
 import { useParams } from "react-router-dom";
 
-export default function Home(){
-    const {token} = useContext(TokenContext);
+export default function Home() {
+    const { token } = useContext(TokenContext);
     const id = useParams().id;
-    const [posts,setPosts] = useState([]);
-    const [inserturl,setInserturl] = useState("");
-    const [insertdesc,setInsertdesc] = useState("");
-    const [userimage,setUserimage] = useState(""); //precisa pegar a url da imagem do usuario atual
-    useEffect(()=>{
-        if(id){
-            axios.get(routes.GET_POSTS_BYID(id), {headers: { Authorization: token }}).then((res)=>{setPosts(res.data)})
-            .catch((err)=>{console.error(err)});
-        }else{
-            axios.get(routes.GET_POSTS, {headers: { Authorization: token }}).then((res)=>{setPosts(res.data)})
-            .catch((err)=>{console.error(err)});
+    const [posts, setPosts] = useState([]);
+    const [inserturl, setInserturl] = useState("");
+    const [insertdesc, setInsertdesc] = useState("");
+    const [userimage, setUserimage] = useState(""); //precisa pegar a url da imagem do usuario atual
+    useEffect(() => {
+        if (id) {
+            axios.get(routes.GET_POSTS_BYID(id), { headers: { Authorization: token } }).then((res) => { setPosts(res.data) })
+                .catch((err) => { console.error(err) });
+        } else {
+            axios.get(routes.GET_POSTS, { headers: { Authorization: token } }).then((res) => { setPosts(res.data) })
+                .catch((err) => { console.error(err) });
         }
     });
-    function handleForm(e){
+    function handleForm(e) {
         e.preventDefault();
         const senddata = {
             url: inserturl,
             complement: insertdesc
         }
-        axios.post(routes.INSERT_POST, senddata,{headers: { Authorization: token }}).catch((err)=>{console.error(err);if(err.request.status===422){alert("Url inválida")}});
+        axios.post(routes.INSERT_POST, senddata, { headers: { Authorization: token } }).catch((err) => { console.error(err); if (err.request.status === 422) { alert("Url inválida") } });
     }
 
     return (
         <>
-        <Topbar/>
-        <CONTENT>
-            <TOPTIMELINE>
-                {posts.length>0 && id?`${posts[0].username}'s posts`:'timeline'}
-            </TOPTIMELINE>
-            <TIMELINE>
-                <POSTS>
-                    {id?null:<INSERTPOST>
-                        <LEFTPOST>
-                            <USERIMAGE src={userimage}/>
-                        </LEFTPOST>
-                        <RIGTHPOST>
-                            <INSERTPOSTMESSAGE>What are you going to share today?</INSERTPOSTMESSAGE>
-                        <FORM onSubmit={handleForm}>
-                    <INPUT h="30px"
-                        value={inserturl}
-                        onChange={(e) => setInserturl(e.target.value)}
-                        type="text"
-                        placeholder="http://..."
-                        required
-                    />
-                    <INPUT h="66px"
-                        value={insertdesc}
-                        onChange={(e) => setInsertdesc(e.target.value)}
-                        type="text"
-                        placeholder="Awesome article about #javascript"
-                        required
-                    />
-                    <BUTTON type="submit">Confirmar</BUTTON>
-                    </FORM>
-                        </RIGTHPOST>
-                    </INSERTPOST>}
-                    {posts.map((item,index)=>{return <Post key={index} content={item.content} link={item.link} url={item.pictureUrl} username={item.username} userid={item.userId}/>})}
-                </POSTS>
-                <Trending/>
-            </TIMELINE>
-        </CONTENT>
+            <Topbar />
+            <CONTENT>
+                <TOPTIMELINE>
+                    {posts.length > 0 && id ? `${posts[0].username}'s posts` : 'timeline'}
+                </TOPTIMELINE>
+                <TIMELINE>
+                    <POSTS>
+                        {id ? null : <INSERTPOST>
+                            <LEFTPOST>
+                                <USERIMAGE src={userimage} />
+                            </LEFTPOST>
+                            <RIGTHPOST>
+                                <INSERTPOSTMESSAGE>What are you going to share today?</INSERTPOSTMESSAGE>
+                                <FORM onSubmit={handleForm}>
+                                    <INPUT h="30px"
+                                        value={inserturl}
+                                        onChange={(e) => setInserturl(e.target.value)}
+                                        type="text"
+                                        placeholder="http://..."
+                                        required
+                                    />
+                                    <INPUT h="66px"
+                                        value={insertdesc}
+                                        onChange={(e) => setInsertdesc(e.target.value)}
+                                        type="text"
+                                        placeholder="Awesome article about #javascript"
+                                        required
+                                    />
+                                    <BUTTON type="submit">Confirmar</BUTTON>
+                                </FORM>
+                            </RIGTHPOST>
+                        </INSERTPOST>}
+                        {posts.map((item, index) => { return <Post key={index} id={item.id} content={item.content} link={item.link} url={item.pictureUrl} username={item.username} userid={item.userId} /> })}
+                    </POSTS>
+                    <Trending />
+                </TIMELINE>
+            </CONTENT>
         </>
     );
 }

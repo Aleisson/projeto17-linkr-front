@@ -1,20 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import ReactTooltip from "react-tooltip";
 import { CustomBsFillHeart, CustomBsHeart, StyledDiv, TextLike } from './style/like.Style.js';
 import * as services from '../../services/linkr.Services.js';
+import TokenContext from '../../contexts/TokenContext.js';
 
-function Like({ postId, token }) {
+function Like({ postId }) {
 
     const [button, setButton] = useState(false);
     const [count, setCount] = useState(0);
     const [users, setUsers] = useState([]);
+    const { token } = useContext(TokenContext);
 
     useEffect(() => {
 
         const promiseCount = services.getCountLikes(postId);
         promiseCount.then(res => setCount(res.data));
         const promiseUsers = services.getLikesUsers(postId);
-        const promiseLikeMe = services.getLikesMe(postId,token);
+        const promiseLikeMe = services.getLikesMe(postId, token);
         promiseLikeMe.then(res => setButton(res.data));
 
         promiseUsers.then(res => {
@@ -24,7 +26,7 @@ function Like({ postId, token }) {
             return setUsers(res.data.slice(0, 2));
         });
 
-    },[])
+    }, [])
 
 
 

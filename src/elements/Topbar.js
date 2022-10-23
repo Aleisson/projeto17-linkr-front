@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import axios from "axios";
 import logo from "../assets/imgs/linkr.svg";
-import img1 from "../assets/imgs/image 6.svg";
 import { DebounceInput } from "react-debounce-input";
 import { IoIosArrowDown } from "react-icons/io";
 import { GoSearch } from "react-icons/go";

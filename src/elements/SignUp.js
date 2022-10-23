@@ -2,6 +2,7 @@ import { useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { useState } from "react";
 import axios from 'axios';
+import routes from '../backendroutes';
 
 function SignUp () {
     const navigate = useNavigate();
@@ -24,7 +25,7 @@ function SignUp () {
 
         if (email !== '' && password !== '' && username !== '' && pictureUrl !== '') {
             setDisableButton(true)
-            let response = axios.post("http://localhost:5000/signup", body)
+            let response = axios.post(routes.SIGN_UP, body)
             
             response.then(() => {
                 navigate("/")

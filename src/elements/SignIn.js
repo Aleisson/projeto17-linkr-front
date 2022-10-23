@@ -1,11 +1,13 @@
 import { useNavigate, Link } from 'react-router-dom';
 import styled from 'styled-components';
-import { useState } from "react";
+import { useContext, useState } from "react";
 import axios from "axios";
+import routes from '../backendroutes';
+import TokenContext from '../contexts/TokenContext';
 
 function SignIn () {
     const navigate = useNavigate();
-
+    const {setToken} = useContext(TokenContext);
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [disableButton, setDisableButton] = useState(false)
@@ -19,8 +21,9 @@ function SignIn () {
         }
 
         if (email !== '' && password !== '') {
-            let response = axios.post("http://localhost:5000", body)
-            response.then(()=> {
+            let response = axios.post(routes.SIGN_IN, body)
+            response.then((res)=> {
+            setToken(res.data)
             navigate("/timeline")
             setDisableButton(false)
         })

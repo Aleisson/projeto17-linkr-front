@@ -17,16 +17,19 @@ export default function Topbar() {
   }
 
   useEffect(() => {
-    const promise = axios.get(`${URL}seachUser/${name}`);
+    if(name.length > 2){
+      const promise = axios.get(`${URL}seachUser/${name}`);
 
-    promise.then((res) => {
-      setUsers(res.data);
-      ReturnListUsers();
-    });
-
-    promise.catch((err) => {
-      console.log(err.response.data);
-    });
+      promise.then((res) => {
+        setUsers(res.data);
+        ReturnListUsers();
+      });
+  
+      promise.catch((err) => {
+        console.log(err.response.data);
+      });
+    }
+    
   }, [name]);
 
   function ReturnListUsers() {
@@ -35,7 +38,6 @@ export default function Topbar() {
         <BoxUsers>
           {users.map((user, i) => {
             const { username, pictureUrl } = user;
-
             return (
               <li key={i}>
                 <img src={pictureUrl} alt={name} />

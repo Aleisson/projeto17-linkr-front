@@ -8,8 +8,8 @@ import { useContext, useEffect, useState } from "react";
 import routes from "../backendroutes";
 import { useParams } from "react-router-dom";
 
-export default function Home() {
-    const { token } = useContext(TokenContext);
+export default function Home(){
+    const {token} = useContext(TokenContext);
     const id = useParams().id;
     const [posts,setPosts] = useState([]);
     const [message,setMessage] = useState("Loading...");

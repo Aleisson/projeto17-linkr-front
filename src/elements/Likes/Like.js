@@ -12,10 +12,10 @@ function Like({ postId, token }) {
 
     useEffect(() => {
 
-        const promiseCount = services.getCountLikes(1);
+        const promiseCount = services.getCountLikes(postId);
         promiseCount.then(res => setCount(res.data));
-        const promiseUsers = services.getLikesUsers(1);
-        const promiseLikeMe = services.getLikesMe(1,123);
+        const promiseUsers = services.getLikesUsers(postId);
+        const promiseLikeMe = services.getLikesMe(postId,token);
         promiseLikeMe.then(res => setButton(res.data));
 
         promiseUsers.then(res => {
@@ -29,11 +29,11 @@ function Like({ postId, token }) {
 
 
 
-    function GiveLike({ button, postId, token }) {
+    function GiveLike({ button, postIdLike, tokenLike }) {
         if (button) {
 
             return <CustomBsFillHeart onClick={() => {
-                const promise = services.deleteLike(postId, token);
+                const promise = services.deleteLike(postIdLike, tokenLike);
                 promise.catch((error) => console.error(error));
                 setUsers(users.filter((x, i) => i > 0))
                 setCount(count - 1);
@@ -42,7 +42,7 @@ function Like({ postId, token }) {
         }
 
         return <CustomBsHeart onClick={() => {
-            const promise = services.postLike(postId, token);
+            const promise = services.postLike(postIdLike, tokenLike);
             promise.catch((error) => console.error(error));
             setCount(count + 1);
             setUsers(['Você', ...users])
@@ -72,7 +72,7 @@ function Like({ postId, token }) {
 
         <StyledDiv >
 
-            <GiveLike button={button} postId={1} token={123} />
+            <GiveLike button={button} postIdLike={postId} tokenLike={token} />
             <CountLike countLike={count} usersLike={users} ></CountLike>
 
 

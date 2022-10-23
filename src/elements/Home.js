@@ -12,27 +12,28 @@ export default function Home(){
     const {token} = useContext(TokenContext);
     const id = useParams().id;
     const [posts,setPosts] = useState([]);
+    const [message,setMessage] = useState("Loading...");
     const [inserturl,setInserturl] = useState("");
     const [insertdesc,setInsertdesc] = useState("");
+    const [refresh,setRefresh] = useState(false);
     const [userimage,setUserimage] = useState(""); //precisa pegar a url da imagem do usuario atual
     useEffect(()=>{
         if(id){
-            axios.get(routes.GET_POSTS_BYID(id), {headers: { Authorization: token }}).then((res)=>{setPosts(res.data)})
-            .catch((err)=>{console.error(err)});
+            axios.get(routes.GET_POSTS_BYID(id), {headers: { Authorization: token }}).then((res)=>{(res.data.posts.length)>0?setPosts(res.data.posts):setMessage("There are no posts yet")})
+            .catch((err)=>{console.error(err);alert("An error occured while trying to fetch the posts, please refresh the page")});
         }else{
-            axios.get(routes.GET_POSTS, {headers: { Authorization: token }}).then((res)=>{setPosts(res.data)})
-            .catch((err)=>{console.error(err)});
+            axios.get(routes.GET_POSTS, {headers: { Authorization: token }}).then((res)=>{setUserimage(res.data.user[0].pictureUrl);(res.data.posts.length)>0?setPosts(res.data.posts):setMessage("There are no posts yet")})
+            .catch((err)=>{console.error(err);alert("An error occured while trying to fetch the posts, please refresh the page")});
         }
-    });
+    },[refresh,id,token]);
     function handleForm(e){
         e.preventDefault();
         const senddata = {
             url: inserturl,
             complement: insertdesc
         }
-        axios.post(routes.INSERT_POST, senddata,{headers: { Authorization: token }}).catch((err)=>{console.error(err);if(err.request.status===422){alert("Url inválida")}});
+        axios.post(routes.INSERT_POST, senddata,{headers: { Authorization: token }}).then(()=>{setRefresh(!refresh)}).catch((err)=>{console.error(err);if(err.request.status===422){alert("Url inválida")}});
     }
-
     return (
         <>
         <Topbar/>
@@ -61,13 +62,12 @@ export default function Home(){
                         onChange={(e) => setInsertdesc(e.target.value)}
                         type="text"
                         placeholder="Awesome article about #javascript"
-                        required
                     />
                     <BUTTON type="submit">Confirmar</BUTTON>
                     </FORM>
                         </RIGTHPOST>
                     </INSERTPOST>}
-                    {posts.map((item,index)=>{return <Post key={index} content={item.content} link={item.link} url={item.pictureUrl} username={item.username} userid={item.userId}/>})}
+                    {posts.length>0?posts.map((item,index)=>{return <Post key={index} content={item.content} link={item.link} url={item.pictureUrl} username={item.username} userid={item.userId}/>}):<MESSAGE>{message}</MESSAGE>}
                 </POSTS>
                 <Trending/>
             </TIMELINE>
@@ -177,4 +177,15 @@ const BUTTON = styled.button`
     font-weight: bold;
     font-size: 14px;
     color: #FFFFFF;
+`;
+const MESSAGE = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 150px;
+    width: 100%;
+    font-family: 'Lato', sans-serif;
+    font-weight: bold;
+    font-size: 25px;
+    color: #FFFFFF
 `;

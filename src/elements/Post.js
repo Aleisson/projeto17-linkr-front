@@ -1,54 +1,55 @@
 import styled from "styled-components";
 import mql from '@microlink/mql'
 import { useEffect, useState } from "react";
-import {Pencil,Trash3Fill,Heart} from "react-bootstrap-icons";
+import { Pencil, Trash3Fill } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
+import { Like } from "./Likes/Like.js";
 
-export default function Post({content,link,url,username,userid}){
-    const [image,setImage] = useState(Object);
-    const [info,setInfo] = useState(Object);
+export default function Post({ id, content, link, url, username, userid}) {
+    const [image, setImage] = useState(Object);
+    const [info, setInfo] = useState(Object);
     const navigate = useNavigate();
     const openInNewTab = url => {
-    window.open(url, '_blank', 'noopener,noreferrer');
+        window.open(url, '_blank', 'noopener,noreferrer');
     }
-    useEffect(()=>{
-        mql(link).then((res)=>{
+    useEffect(() => {
+        mql(link).then((res) => {
             setImage(res.data.logo)
             setInfo({
                 title: res.data.title,
                 description: res.data.description,
                 url: res.data.url
             });
-        }).catch((err)=>{console.error(err)});
-    },[link]);
-    return(
+        }).catch((err) => { console.error(err) });
+    }, [link]);
+    return (
         <>
-        <CONTENT>
-            <LEFT>
-                <USERIMAGE src={url} onClick={()=>{navigate(`/user/${userid}`)}}/>
-                <Heart size={23} color="#FFFFFF"/>
-            </LEFT>
-            <RIGTH>
-                <INFOS>
-                    <NAME>
-                        <p onClick={()=>{navigate(`/user/${userid}`)}}>{username}</p>
-                        <EDIT>
-                            <Pencil size={23} color="#FFFFFF"/>
-                            <Trash3Fill size={23} color="#FFFFFF"/>
-                        </EDIT>
-                    </NAME>
-                    <DESCRIPTION><p>{content}</p></DESCRIPTION>
-                </INFOS>
-                <LINK onClick={()=>{openInNewTab(link)}}>
-                    <INFOSLINK>
-                        <TITLE>{info.title}</TITLE>
-                        <DESC>{info.description}</DESC>
-                        <URL>{info.url}</URL>
-                    </INFOSLINK>
-                    <LOGOSITE alt="logo" src={image.url}/>
-                </LINK>
-            </RIGTH>
-        </CONTENT>
+            <CONTENT>
+                <LEFT>
+                    <USERIMAGE src={url} onClick={() => { navigate(`/user/${userid}`) }} />
+                    <Like postId={id}/>
+                </LEFT>
+                <RIGTH>
+                    <INFOS>
+                        <NAME>
+                            <p onClick={() => { navigate(`/user/${userid}`) }}>{username}</p>
+                            <EDIT>
+                                <Pencil size={23} color="#FFFFFF" />
+                                <Trash3Fill size={23} color="#FFFFFF" />
+                            </EDIT>
+                        </NAME>
+                        <DESCRIPTION><p>{content}</p></DESCRIPTION>
+                    </INFOS>
+                    <LINK onClick={() => { openInNewTab(link) }}>
+                        <INFOSLINK>
+                            <TITLE>{info.title}</TITLE>
+                            <DESC>{info.description}</DESC>
+                            <URL>{info.url}</URL>
+                        </INFOSLINK>
+                        <LOGOSITE alt="logo" src={image.url} />
+                    </LINK>
+                </RIGTH>
+            </CONTENT>
         </>
     );
 }

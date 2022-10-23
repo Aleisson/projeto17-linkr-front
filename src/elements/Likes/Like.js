@@ -9,16 +9,16 @@ function Like({ postId }) {
     const [button, setButton] = useState(false);
     const [count, setCount] = useState(0);
     const [users, setUsers] = useState([]);
-    const { token } = useContext(TokenContext);
-
+    const { setToken, token } = useContext(TokenContext);
+    console.log(token);
     useEffect(() => {
-
+        setToken(123)
         const promiseCount = services.getCountLikes(postId);
         promiseCount.then(res => setCount(res.data));
         const promiseUsers = services.getLikesUsers(postId);
         const promiseLikeMe = services.getLikesMe(postId, token);
         promiseLikeMe.then(res => setButton(res.data));
-
+        
         promiseUsers.then(res => {
             if (res.data.lenght < 2) {
                 return setUsers(res.data);
@@ -26,7 +26,7 @@ function Like({ postId }) {
             return setUsers(res.data.slice(0, 2));
         });
 
-    }, [])
+    },[postId, token])
 
 
 
@@ -46,13 +46,13 @@ function Like({ postId }) {
             const promise = services.postLike(postIdLike, tokenLike);
             promise.catch((error) => console.error(error));
             setCount(count + 1);
-            setUsers(['Você', ...users])
+            setUsers(['Você', ...users]);
             setButton(true);
         }} />
     }
 
     function CountLike({ countLike, usersLike }) {
-
+        
         return <>
             <TextLike data-tip data-for="registerTip" >
                 {`${countLike} `} Likes

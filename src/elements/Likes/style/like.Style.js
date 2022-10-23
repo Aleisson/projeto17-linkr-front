@@ -3,26 +3,26 @@ import { BsFillHeartFill, BsHeart } from 'react-icons/bs';
 
 const StyledDiv = styled.div`
 
-    background-color: grey;
-    margin: 12vw auto;
+    //background-color: grey;
+    margin: 0 auto;
     width: auto;
-    height: 12vw;
-    padding: 64px 0;
+    height: 20%;
+    //padding: 64px 0;
     display:flex;
     flex-direction:column;
     align-items:center;
-    justify-content: space-around;
+    justify-content: space-between;
 
 `
 
 
 const CustomBsHeart = styled(BsHeart)`
-    font-size: 32px;
+    font-size: 24px;
     color: white;
 `
 const CustomBsFillHeart = styled(BsFillHeartFill)`
     color: #AC0000;
-    font-size: 32px;
+    font-size: 24px;
 `
 
 const TextLike = styled.p`
@@ -31,7 +31,7 @@ const TextLike = styled.p`
     font-family: 'Lato';
     font-style: normal;
     font-weight: 400;
-    font-size: 23px;
+    font-size: 13px;
     line-height: 13px;
     text-align: center;
     color: #FFFFFF;

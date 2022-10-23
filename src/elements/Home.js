@@ -67,7 +67,7 @@ export default function Home() {
                                 </FORM>
                             </RIGTHPOST>
                         </INSERTPOST>}
-                        {posts.map((item, index) => { return <Post key={index} id={item.id} content={item.content} link={item.link} url={item.pictureUrl} username={item.username} userid={item.userId} /> })}
+                        {posts.map((item, index) => { return <Post key={index} id={item.id} content={item.content} link={item.link} url={item.pictureUrl} username={item.username} userid={item.userId} token={token} /> })}
                     </POSTS>
                     <Trending />
                 </TIMELINE>

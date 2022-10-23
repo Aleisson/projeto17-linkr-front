@@ -16,7 +16,9 @@ export default function Home(){
     const [inserturl,setInserturl] = useState("");
     const [insertdesc,setInsertdesc] = useState("");
     const [refresh,setRefresh] = useState(false);
-    const [userimage,setUserimage] = useState(""); //precisa pegar a url da imagem do usuario atual
+    const [userimage,setUserimage] = useState("");
+    const [disable,setDisable] = useState(false);
+    const [buttontext,setButtontext] = useState("Publicar");
     useEffect(()=>{
         if(id){
             axios.get(routes.GET_POSTS_BYID(id), {headers: { Authorization: token }}).then((res)=>{(res.data.posts.length)>0?setPosts(res.data.posts):setMessage("There are no posts yet")})
@@ -28,11 +30,14 @@ export default function Home(){
     },[refresh,id,token]);
     function handleForm(e){
         e.preventDefault();
+        setDisable(true);
+        setButtontext("Publishing...")
         const senddata = {
             url: inserturl,
             complement: insertdesc
         }
-        axios.post(routes.INSERT_POST, senddata,{headers: { Authorization: token }}).then(()=>{setRefresh(!refresh)}).catch((err)=>{console.error(err);if(err.request.status===422){alert("Url inválida")}});
+        axios.post(routes.INSERT_POST, senddata,{headers: { Authorization: token }}).then(()=>{setDisable(false);setRefresh(!refresh);setInsertdesc("");setInserturl("");setButtontext("Publicar");})
+        .catch((err)=>{console.error(err);setDisable(false);setButtontext("Publicar");if(err.request.status===422){alert("Url inválida")}else{alert("Houve um erro ao publicar seu link")}});
     }
     return (
         <>
@@ -51,6 +56,7 @@ export default function Home(){
                             <INSERTPOSTMESSAGE>What are you going to share today?</INSERTPOSTMESSAGE>
                         <FORM onSubmit={handleForm}>
                     <INPUT h="30px"
+                        disabled={disable}
                         value={inserturl}
                         onChange={(e) => setInserturl(e.target.value)}
                         type="text"
@@ -58,12 +64,13 @@ export default function Home(){
                         required
                     />
                     <INPUT h="66px"
+                        disabled={disable}
                         value={insertdesc}
                         onChange={(e) => setInsertdesc(e.target.value)}
                         type="text"
                         placeholder="Awesome article about #javascript"
                     />
-                    <BUTTON type="submit">Confirmar</BUTTON>
+                    <BUTTON disabled={disable} type="submit">{buttontext}</BUTTON>
                     </FORM>
                         </RIGTHPOST>
                     </INSERTPOST>}

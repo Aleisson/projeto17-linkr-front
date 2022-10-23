@@ -11,6 +11,7 @@ import { useParams } from "react-router-dom";
 export default function Home() {
     const { token } = useContext(TokenContext);
     const id = useParams().id;
+<<<<<<< HEAD
     const [posts, setPosts] = useState([]);
     const [inserturl, setInserturl] = useState("");
     const [insertdesc, setInsertdesc] = useState("");
@@ -25,16 +26,43 @@ export default function Home() {
         }
     });
     function handleForm(e) {
+=======
+    const [posts,setPosts] = useState([]);
+    const [message,setMessage] = useState("Loading...");
+    const [inserturl,setInserturl] = useState("");
+    const [insertdesc,setInsertdesc] = useState("");
+    const [refresh,setRefresh] = useState(false);
+    const [userimage,setUserimage] = useState("");
+    const [disable,setDisable] = useState(false);
+    const [buttontext,setButtontext] = useState("Publicar");
+    useEffect(()=>{
+        if(id){
+            axios.get(routes.GET_POSTS_BYID(id), {headers: { Authorization: token }}).then((res)=>{(res.data.posts.length)>0?setPosts(res.data.posts):setMessage("There are no posts yet")})
+            .catch((err)=>{console.error(err);alert("An error occured while trying to fetch the posts, please refresh the page")});
+        }else{
+            axios.get(routes.GET_POSTS, {headers: { Authorization: token }}).then((res)=>{setUserimage(res.data.user[0].pictureUrl);(res.data.posts.length)>0?setPosts(res.data.posts):setMessage("There are no posts yet")})
+            .catch((err)=>{console.error(err);alert("An error occured while trying to fetch the posts, please refresh the page")});
+        }
+    },[refresh,id,token]);
+    function handleForm(e){
+>>>>>>> b6fe9b34e5ddc24bfc53778cf1a5873f0596b244
         e.preventDefault();
+        setDisable(true);
+        setButtontext("Publishing...")
         const senddata = {
             url: inserturl,
             complement: insertdesc
         }
+<<<<<<< HEAD
         axios.post(routes.INSERT_POST, senddata, { headers: { Authorization: token } }).catch((err) => { console.error(err); if (err.request.status === 422) { alert("Url inválida") } });
+=======
+        axios.post(routes.INSERT_POST, senddata,{headers: { Authorization: token }}).then(()=>{setDisable(false);setRefresh(!refresh);setInsertdesc("");setInserturl("");setButtontext("Publicar");})
+        .catch((err)=>{console.error(err);setDisable(false);setButtontext("Publicar");if(err.request.status===422){alert("Url inválida")}else{alert("Houve um erro ao publicar seu link")}});
+>>>>>>> b6fe9b34e5ddc24bfc53778cf1a5873f0596b244
     }
-
     return (
         <>
+<<<<<<< HEAD
             <Topbar />
             <CONTENT>
                 <TOPTIMELINE>
@@ -72,6 +100,46 @@ export default function Home() {
                     <Trending />
                 </TIMELINE>
             </CONTENT>
+=======
+        <Topbar/>
+        <CONTENT>
+            <TOPTIMELINE>
+                {posts.length>0 && id?`${posts[0].username}'s posts`:'timeline'}
+            </TOPTIMELINE>
+            <TIMELINE>
+                <POSTS>
+                    {id?null:<INSERTPOST>
+                        <LEFTPOST>
+                            <USERIMAGE src={userimage}/>
+                        </LEFTPOST>
+                        <RIGTHPOST>
+                            <INSERTPOSTMESSAGE>What are you going to share today?</INSERTPOSTMESSAGE>
+                        <FORM onSubmit={handleForm}>
+                    <INPUT h="30px"
+                        disabled={disable}
+                        value={inserturl}
+                        onChange={(e) => setInserturl(e.target.value)}
+                        type="text"
+                        placeholder="http://..."
+                        required
+                    />
+                    <INPUT h="66px"
+                        disabled={disable}
+                        value={insertdesc}
+                        onChange={(e) => setInsertdesc(e.target.value)}
+                        type="text"
+                        placeholder="Awesome article about #javascript"
+                    />
+                    <BUTTON disabled={disable} type="submit">{buttontext}</BUTTON>
+                    </FORM>
+                        </RIGTHPOST>
+                    </INSERTPOST>}
+                    {posts.length>0?posts.map((item,index)=>{return <Post key={index} content={item.content} link={item.link} url={item.pictureUrl} username={item.username} userid={item.userId}/>}):<MESSAGE>{message}</MESSAGE>}
+                </POSTS>
+                <Trending/>
+            </TIMELINE>
+        </CONTENT>
+>>>>>>> b6fe9b34e5ddc24bfc53778cf1a5873f0596b244
         </>
     );
 }
@@ -177,4 +245,15 @@ const BUTTON = styled.button`
     font-weight: bold;
     font-size: 14px;
     color: #FFFFFF;
+`;
+const MESSAGE = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 150px;
+    width: 100%;
+    font-family: 'Lato', sans-serif;
+    font-weight: bold;
+    font-size: 25px;
+    color: #FFFFFF
 `;

@@ -1,16 +1,69 @@
 import styled from "styled-components";
+import axios from "axios";
 import logo from "../assets/imgs/linkr.svg";
+import img1 from "../assets/imgs/image 6.svg";
+import { DebounceInput } from "react-debounce-input";
 import { IoIosArrowDown } from "react-icons/io";
 import { GoSearch } from "react-icons/go";
+import { useEffect, useState } from "react";
 
 export default function Topbar() {
+  const [name, setName] = useState("");
+  const [users, setUsers] = useState([]);
+  const URL = process.env.REACT_APP_URL_PROJECT;
+
+  function seachUser(e) {
+    setName(e.target.value);
+  }
+
+  useEffect(() => {
+    const promise = axios.get(`${URL}seachUser/${name}`);
+
+    promise.then((res) => {
+      setUsers(res.data);
+      ReturnListUsers();
+    });
+
+    promise.catch((err) => {
+      console.log(err.response.data);
+    });
+  }, [name]);
+
+  function ReturnListUsers() {
+    if (name.length > 2) {
+      return (
+        <BoxUsers>
+          {users.map((user, i) => {
+            const { username, pictureUrl } = user;
+
+            return (
+              <li key={i}>
+                <img src={pictureUrl} alt={name} />
+                <p>{username}</p>
+              </li>
+            );
+          })}
+        </BoxUsers>
+      );
+    }
+    return <BoxUsers></BoxUsers>;
+  }
+
   return (
     <CONTENT>
       <img src={logo} alt="" />
 
       <div>
-        <input placeholder="Search for people" />
+        <DebounceInput
+          type="text"
+          placeholder="Search for people..."
+          user="user"
+          minLength={3}
+          debounceTimeout={300}
+          onChange={(e) => seachUser(e)}
+        />
         <GoSearch />
+        {users.length > 0 ? <ReturnListUsers /> : ""}
       </div>
 
       <USER>
@@ -72,6 +125,34 @@ const CONTENT = styled.header`
       height: 21px;
       cursor: pointer;
       color: #c6c6c6;
+    }
+  }
+`;
+
+const BoxUsers = styled.ul`
+  border-radius: 8px;
+  background: #e7e7e7;
+  li {
+    width: 563px;
+    height: 45px;
+    padding: 14px 17px;
+
+    display: flex;
+    align-items: center;
+
+    img {
+      width: 39px;
+      height: 39px;
+      margin-right: 14px;
+      border-radius: 50%;
+    }
+
+    p {
+      font-family: "Lato", sans-serif;
+      font-size: 17px;
+      line-height: 23px;
+
+      color: #515151;
     }
   }
 `;

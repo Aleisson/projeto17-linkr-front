@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import ReactTooltip from "react-tooltip";
-import styled from "styled-components";
-import { CustomBsFillHeart, CustomBsHeart, StyledDiv } from './style/like.Style.js';
+import { CustomBsFillHeart, CustomBsHeart, StyledDiv, TextLike } from './style/like.Style.js';
 import * as services from '../../services/linkr.Services.js';
 
 function Like({ postId, token }) {
@@ -25,7 +24,7 @@ function Like({ postId, token }) {
             return setUsers(res.data.slice(0, 2));
         });
 
-    }, [])
+    },[])
 
 
 
@@ -83,17 +82,6 @@ function Like({ postId, token }) {
 
 }
 
-const TextLike = styled.p`
-
-    font-family: 'Lato', sans-serif;
-    font-family: 'Lato';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 23px;
-    line-height: 13px;
-    text-align: center;
-    color: #FFFFFF;
-`
 
 
 export { Like };

@@ -25,8 +25,21 @@ const CustomBsFillHeart = styled(BsFillHeartFill)`
     font-size: 32px;
 `
 
+const TextLike = styled.p`
+
+    font-family: 'Lato', sans-serif;
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 23px;
+    line-height: 13px;
+    text-align: center;
+    color: #FFFFFF;
+`
+
 export {
     StyledDiv,
     CustomBsHeart,
-    CustomBsFillHeart
+    CustomBsFillHeart,
+    TextLike
 };

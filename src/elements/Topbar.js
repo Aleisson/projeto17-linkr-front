@@ -5,19 +5,17 @@ import { DebounceInput } from "react-debounce-input";
 import { IoIosArrowDown } from "react-icons/io";
 import { GoSearch } from "react-icons/go";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Topbar() {
   const [name, setName] = useState("");
   const [users, setUsers] = useState([]);
+  const navigate = useNavigate();
   const URL = process.env.REACT_APP_URL_PROJECT;
-
-  function seachUser(e) {
-    setName(e.target.value);
-  }
 
   useEffect(() => {
     if(name.length > 2){
-      const promise = axios.get(`${URL}seachUser/${name}`);
+      const promise = axios.get(`${URL}/seachUser/${name}`);
 
       promise.then((res) => {
         setUsers(res.data);
@@ -36,11 +34,11 @@ export default function Topbar() {
       return (
         <BoxUsers>
           {users.map((user, i) => {
-            const { username, pictureUrl } = user;
+            const { id, username, pictureUrl } = user;
             return (
-              <li key={i}>
+              <li key={i} id = {id}>
                 <img src={pictureUrl} alt={name} />
-                <p>{username}</p>
+                <p onClick={() => { navigate(`/user/${id}`) }}>{username}</p>
               </li>
             );
           })}
@@ -61,7 +59,7 @@ export default function Topbar() {
           user="user"
           minLength={3}
           debounceTimeout={300}
-          onChange={(e) => seachUser(e)}
+          onChange={(e) => setName(e.target.value)}
         />
         <GoSearch />
         {users.length > 0 ? <ReturnListUsers /> : ""}

@@ -6,7 +6,6 @@ import SignUp from "./elements/SignUp";
 import Home from "./elements/Home";
 import TokenContext from "./contexts/TokenContext";
 import { useState } from "react";
-import { WorkPlace } from "./elements/Likes/WorkPlace.js";
 
 export default function App(){
   const [token,setToken] = useState(null);
@@ -21,7 +20,6 @@ export default function App(){
         <Route path="/signup" element={<SignUp/>}/>
         <Route path="/timeline" element={<Home/>}/>
         <Route path="/user/:id" element={<Home/>}/>
-        <Route path="/workplace" element={<WorkPlace />} />
       </Routes>
     </BrowserRouter>
     </TokenContext.Provider>

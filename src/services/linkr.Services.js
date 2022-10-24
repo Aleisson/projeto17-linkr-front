@@ -1,37 +1,36 @@
 import axios from "axios";
-import { filterToken } from "./services.Helper.js";
 const BASE_URL = process.env.REACT_APP_URL_PROJECT;
 
-function postLike(postId, token) {
+function postLike(postId, userId) {
 
     const promise = axios.post(
-        `${BASE_URL}/like/${postId}`,
+        `${BASE_URL}/like/${postId}/user/${userId}`,
         {},
-        filterToken(token));
+    );
     return promise;
 }
 
-function deleteLike(postId, token) {
+function deleteLike(postId, userId) {
 
     const promise = axios.delete(
-        `${BASE_URL}/like/${postId}`,
-        filterToken(token));
+        `${BASE_URL}/like/${postId}/user/${userId}`,
+    );
     return promise;
 }
 
 
-async function getLikesMe(postId, token) {
+async function getLikesMe(postId, userId) {
+    console.log(userId);
+    const promise = await axios.get(
+        `${BASE_URL}/like/${postId}/user/${userId}`,
 
-    const promise =  await axios.get(
-        `${BASE_URL}/like/${postId}/me`,
-        filterToken(token)
     );
     return promise;
 }
 
 async function getLikesUsers(postId) {
 
-    const promise =  await axios.get(
+    const promise = await axios.get(
         `${BASE_URL}/like/${postId}/users`
     );
     return promise;

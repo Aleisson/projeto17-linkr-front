@@ -8,47 +8,36 @@ import { useContext, useEffect, useState } from "react";
 import routes from "../backendroutes";
 import { useParams } from "react-router-dom";
 
-export default function Home() {
-  const { token } = useContext(TokenContext);
-  const id = useParams().id;
-  const [posts, setPosts] = useState([]);
-  const [message, setMessage] = useState("Loading...");
-  const [inserturl, setInserturl] = useState("");
-  const [insertdesc, setInsertdesc] = useState("");
-  const [refresh, setRefresh] = useState(false);
-  const [userimage, setUserimage] = useState("");
-  const [disable, setDisable] = useState(false);
-  const [buttontext, setButtontext] = useState("Publicar");
-  useEffect(() => {
-    if (id) {
-      axios
-        .get(routes.GET_POSTS_BYID(id), { headers: { Authorization: token } })
-        .then((res) => {
-          res.data.posts.length > 0
-            ? setPosts(res.data.posts)
-            : setMessage("There are no posts yet");
-        })
-        .catch((err) => {
-          console.error(err);
-          alert(
-            "An error occured while trying to fetch the posts, please refresh the page"
-          );
-        });
-    } else {
-      axios
-        .get(routes.GET_POSTS, { headers: { Authorization: token } })
-        .then((res) => {
-          setUserimage(res.data.user[0].pictureUrl);
-          res.data.posts.length > 0
-            ? setPosts(res.data.posts)
-            : setMessage("There are no posts yet");
-        })
-        .catch((err) => {
-          console.error(err);
-          alert(
-            "An error occured while trying to fetch the posts, please refresh the page"
-          );
-        });
+export default function Home(){
+    const {token} = useContext(TokenContext);
+    const id = useParams().id;
+    const [posts,setPosts] = useState([]);
+    const [message,setMessage] = useState("Loading...");
+    const [inserturl,setInserturl] = useState("");
+    const [insertdesc,setInsertdesc] = useState("");
+    const [refresh,setRefresh] = useState(false);
+    const [userimage,setUserimage] = useState("");
+    const [disable,setDisable] = useState(false);
+    const [buttontext,setButtontext] = useState("Publicar");
+    useEffect(()=>{
+        if(id){
+            axios.get(routes.GET_POSTS_BYID(id), {headers: { Authorization: token }}).then((res)=>{res.data.length>0?setPosts(res.data):setMessage("There are no posts yet")})
+            .catch((err)=>{console.error(err);alert("An error occured while trying to fetch the posts, please refresh the page")});
+        }else{
+            axios.get(routes.GET_POSTS, {headers: { Authorization: token }}).then((res)=>{setUserimage(res.data.user[0].pictureUrl);(res.data.posts.length)>0?setPosts(res.data.posts):setMessage("There are no posts yet")})
+            .catch((err)=>{console.error(err);alert("An error occured while trying to fetch the posts, please refresh the page")});
+        }
+    },[refresh,id,token]);
+    function handleForm(e){
+        e.preventDefault();
+        setDisable(true);
+        setButtontext("Publishing...")
+        const senddata = {
+            url: inserturl,
+            complement: insertdesc
+        }
+        axios.post(routes.INSERT_POST, senddata,{headers: { Authorization: token }}).then(()=>{setDisable(false);setRefresh(!refresh);setInsertdesc("");setInserturl("");setButtontext("Publicar");})
+        .catch((err)=>{console.error(err);setDisable(false);setButtontext("Publicar");if(err.request.status===422){alert("Url inválida")}else{alert("Houve um erro ao publicar seu link")}});
     }
   }, [refresh, id, token]);
   function handleForm(e) {
@@ -115,35 +104,17 @@ export default function Home() {
                       type="text"
                       placeholder="Awesome article about #javascript"
                     />
-                    <BUTTON disabled={disable} type="submit">
-                      {buttontext}
-                    </BUTTON>
-                  </FORM>
-                </RIGTHPOST>
-              </INSERTPOST>
-            )}
-            {posts.length > 0 ? (
-              posts.map((item, index) => {
-                return (
-                  <Post
-                    key={index}
-                    content={item.content}
-                    link={item.link}
-                    url={item.pictureUrl}
-                    username={item.username}
-                    userid={item.userId}
-                  />
-                );
-              })
-            ) : (
-              <MESSAGE>{message}</MESSAGE>
-            )}
-          </POSTS>
-          <Trending />
-        </TIMELINE>
-      </CONTENT>
-    </>
-  );
+                    <BUTTON disabled={disable} type="submit">{buttontext}</BUTTON>
+                    </FORM>
+                        </RIGTHPOST>
+                    </INSERTPOST>}
+                    {posts.length>0?posts.map((item,index)=>{return <Post key={index} id={item.id} content={item.content} link={item.link} url={item.pictureUrl} username={item.username} userid={item.userId}/>}):<MESSAGE>{message}</MESSAGE>}
+                </POSTS>
+                <Trending/>
+            </TIMELINE>
+        </CONTENT>
+        </>
+    );
 }
 
 const CONTENT = styled.div`

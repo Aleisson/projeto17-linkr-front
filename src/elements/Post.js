@@ -12,6 +12,7 @@ export default function Post({ id, content, link, url, username, userid }) {
     const openInNewTab = url => {
         window.open(url, '_blank', 'noopener,noreferrer');
     }
+
     useEffect(() => {
         mql(link).then((res) => {
             setImage(res.data.logo)
@@ -38,7 +39,7 @@ export default function Post({ id, content, link, url, username, userid }) {
                                 <Trash3Fill size={23} color="#FFFFFF" />
                             </EDIT>
                         </NAME>
-                        <DESCRIPTION><p>{content}</p></DESCRIPTION>
+                        <DESCRIPTION>{content}</DESCRIPTION>
                     </INFOS>
                     <LINK onClick={() => { openInNewTab(link) }}>
                         <INFOSLINK>

@@ -1,4 +1,4 @@
-const backend = "https://deploy-backend-linkr.herokuapp.com/";
+const backend = process.env.REACT_APP_URL_PROJECT;
 
 const routes = {
     GET_POSTS: `${backend}/publish`,

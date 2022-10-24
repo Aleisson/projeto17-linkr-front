@@ -28,18 +28,6 @@ export default function Home(){
             .catch((err)=>{console.error(err);alert("An error occured while trying to fetch the posts, please refresh the page")});
         }
     },[refresh,id,token]);
-    function handleForm(e){
-        e.preventDefault();
-        setDisable(true);
-        setButtontext("Publishing...")
-        const senddata = {
-            url: inserturl,
-            complement: insertdesc
-        }
-        axios.post(routes.INSERT_POST, senddata,{headers: { Authorization: token }}).then(()=>{setDisable(false);setRefresh(!refresh);setInsertdesc("");setInserturl("");setButtontext("Publicar");})
-        .catch((err)=>{console.error(err);setDisable(false);setButtontext("Publicar");if(err.request.status===422){alert("Url inválida")}else{alert("Houve um erro ao publicar seu link")}});
-    }
-  }, [refresh, id, token]);
   function handleForm(e) {
     e.preventDefault();
     setDisable(true);
@@ -107,7 +95,7 @@ export default function Home(){
                     <BUTTON disabled={disable} type="submit">{buttontext}</BUTTON>
                     </FORM>
                         </RIGTHPOST>
-                    </INSERTPOST>}
+                    </INSERTPOST>)}
                     {posts.length>0?posts.map((item,index)=>{return <Post key={index} id={item.id} content={item.content} link={item.link} url={item.pictureUrl} username={item.username} userid={item.userId}/>}):<MESSAGE>{message}</MESSAGE>}
                 </POSTS>
                 <Trending/>

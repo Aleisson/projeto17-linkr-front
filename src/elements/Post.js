@@ -5,7 +5,7 @@ import { Pencil, Trash3Fill } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import { Like } from "./Likes/Like.js";
 
-export default function Post({ id, content, link, url, username, userid}) {
+export default function Post({ id, content, link, url, username, userid }) {
     const [image, setImage] = useState(Object);
     const [info, setInfo] = useState(Object);
     const navigate = useNavigate();
@@ -43,7 +43,7 @@ export default function Post({ id, content, link, url, username, userid}) {
             <CONTENT>
                 <LEFT>
                     <USERIMAGE src={url} onClick={() => { navigate(`/user/${userid}`) }} />
-                    <Like postId={id}/>
+                    <Like postId={id} userId={userid} />
                 </LEFT>
                 <RIGTH>
                     <INFOS>

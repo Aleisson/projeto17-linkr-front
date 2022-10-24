@@ -1,4 +1,4 @@
-import { Like } from './Like.js';
+
 import Post from '../Post.js';
 function WorkPlace() {
     //postId receve o id do post

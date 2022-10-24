@@ -27,7 +27,10 @@ function SignIn () {
             navigate("/timeline")
             setDisableButton(false)
         })
-            response.catch(res => alert(res.response.data))
+            response.catch(res => {
+                alert(res.response.data)
+                setDisableButton(false)
+            })
         } else {
             alert("Preencha todos os campos!")
         }

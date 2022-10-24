@@ -25,7 +25,7 @@ function SignUp () {
 
         if (email !== '' && password !== '' && username !== '' && pictureUrl !== '') {
             setDisableButton(true)
-            let response = axios.post(routes.SIGN_UP, body)
+            let response = axios.post("http://localhost:5000/signup", body)
             
             response.then(() => {
                 navigate("/")

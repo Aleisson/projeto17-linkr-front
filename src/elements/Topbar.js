@@ -1,9 +1,8 @@
 import styled from "styled-components";
 import axios from "axios";
 import logo from "../assets/imgs/linkr.svg";
-import routes from "../backendroutes";
 import { DebounceInput } from "react-debounce-input";
-import { IoIosArrowDown } from "react-icons/io";
+import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { GoSearch } from "react-icons/go";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -11,22 +10,40 @@ import { useNavigate } from "react-router-dom";
 export default function Topbar() {
   const [name, setName] = useState("");
   const [users, setUsers] = useState([]);
+  const [isOpenLogOut, setIsOpenLogOut] = useState(false);
+  const [profilePic, setProfilePic] = useState('');
   const navigate = useNavigate();
+  const URL = process.env.REACT_APP_URL_PROJECT;
+
+  function openLogOut () {
+   if (isOpenLogOut) {
+    setIsOpenLogOut(false)
+   } else {
+    setIsOpenLogOut(true)
+   }
+  }
+
+  function logOut () {
+    openLogOut()
+    localStorage.clear();
+    navigate("/")
+  }
 
   useEffect(() => {
     if(name.length > 2){
-      const promise = axios.get(routes.SEARCH_USER_BY_NAME(name));
+      const promise = axios.get(`${URL}/seachUser/${name}`);
 
       promise.then((res) => {
+        setProfilePic(res.data[0].pictureUrl);
         setUsers(res.data);
         ReturnListUsers();
       });
-  
+
       promise.catch((err) => {
         console.log(err.response.data);
       });
     }
-    
+
   }, [name]);
 
   function ReturnListUsers() {
@@ -49,7 +66,8 @@ export default function Topbar() {
   }
 
   return (
-    <CONTENT>
+    <>
+      <CONTENT onClick={openLogOut}>
       <img src={logo} alt="" />
 
       <div>
@@ -66,12 +84,16 @@ export default function Topbar() {
       </div>
 
       <USER>
-        <IoIosArrowDown />
+        {!isOpenLogOut ? <IoIosArrowDown onClick={openLogOut}/> : <IoIosArrowUp onClick={openLogOut}/>}
         <div>
-          <img src="" alt="" />
+          <img src={profilePic} alt="foto perfil" onClick={openLogOut} />
         </div>
       </USER>
     </CONTENT>
+    {isOpenLogOut ? <LogOut>
+    <h1 onClick={logOut}>Logout</h1>
+    </LogOut> : ''}
+    </>
   );
 }
 
@@ -175,4 +197,23 @@ const USER = styled.section`
     height: 53px;
     background-color: blueviolet;
   }
+`;
+
+const LogOut = styled.div`
+  background-color: #171717;
+  width: 130px;
+  height: 47px;
+  border-bottom-left-radius: 15px;
+  position: fixed;
+  right: 0%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+    h1 {
+      font-family: "Lato", sans-serif;
+      font-size: 17px;
+      color: white;
+    }
 `;

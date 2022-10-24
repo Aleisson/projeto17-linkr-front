@@ -9,10 +9,8 @@ function Like({ postId }) {
     const [button, setButton] = useState(false);
     const [count, setCount] = useState(0);
     const [users, setUsers] = useState([]);
-    const { setToken, token } = useContext(TokenContext);
-   
+    const { token } = useContext(TokenContext);
     useEffect(() => {
-        
         const promiseCount = services.getCountLikes(postId);
         promiseCount.then(res => setCount(res.data));
         const promiseUsers = services.getLikesUsers(postId);

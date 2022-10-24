@@ -21,7 +21,7 @@ function SignIn () {
         }
 
         if (email !== '' && password !== '') {
-            let response = axios.post("http://localhost:5000", body)
+            let response = axios.post(routes.SIGN_IN, body)
             response.then((res)=> {
             setToken(res.data)
             navigate("/timeline")

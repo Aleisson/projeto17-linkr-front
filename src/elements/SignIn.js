@@ -26,6 +26,7 @@ function SignIn () {
             setToken(res.data)
             navigate("/timeline")
             setDisableButton(false)
+            localStorage.setItem("token", JSON.stringify(res.data))
         })
             response.catch(res => {
                 alert(res.response.data)

@@ -74,7 +74,7 @@ export default function Home(){
                     </FORM>
                         </RIGTHPOST>
                     </INSERTPOST>}
-                    {posts.length>0?posts.map((item,index)=>{return <Post key={index} content={item.content} link={item.link} url={item.pictureUrl} username={item.username} userid={item.userId}/>}):<MESSAGE>{message}</MESSAGE>}
+                    {posts.length>0?posts.map((item,index)=>{return <Post key={index} id={item.id} content={item.content} link={item.link} url={item.pictureUrl} username={item.username} userid={item.userId}/>}):<MESSAGE>{message}</MESSAGE>}
                 </POSTS>
                 <Trending/>
             </TIMELINE>

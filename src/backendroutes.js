@@ -1,3 +1,5 @@
+import dotenv from "dotenv";
+dotenv.config();
 const backend = process.env.REACT_APP_URL_PROJECT;
 
 const routes = {
@@ -5,6 +7,7 @@ const routes = {
     INSERT_POST: `${backend}/publish`,
     SIGN_UP: `${backend}/signup`,
     SIGN_IN: `${backend}/signin`,
+    SEARCH_USER_BY_NAME: (name)=>{return `${backend}/seachUser/${name}`},
     GET_POSTS_BYID: (id)=>{return `${backend}/getposts/${id}`
     }
 }

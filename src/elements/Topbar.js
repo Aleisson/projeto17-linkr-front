@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import axios from "axios";
 import logo from "../assets/imgs/linkr.svg";
+import routes from "../backendroutes";
 import { DebounceInput } from "react-debounce-input";
 import { IoIosArrowDown } from "react-icons/io";
 import { GoSearch } from "react-icons/go";
@@ -11,11 +12,10 @@ export default function Topbar() {
   const [name, setName] = useState("");
   const [users, setUsers] = useState([]);
   const navigate = useNavigate();
-  const URL = process.env.REACT_APP_URL_PROJECT;
 
   useEffect(() => {
     if(name.length > 2){
-      const promise = axios.get(`${URL}/seachUser/${name}`);
+      const promise = axios.get(routes.SEARCH_USER_BY_NAME(name));
 
       promise.then((res) => {
         setUsers(res.data);

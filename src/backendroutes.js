@@ -1,4 +1,4 @@
-const backend = "http://localhost:4000";
+const backend = process.env.REACT_APP_URL_PROJECT;
 
 const routes = {
     GET_POSTS: `${backend}/publish`,

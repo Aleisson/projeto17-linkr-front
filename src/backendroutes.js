@@ -1,6 +1,4 @@
-import dotenv from "dotenv";
-dotenv.config();
-const backend = process.env.REACT_APP_URL_PROJECT;
+const backend = "https://deploy-backend-linkr.herokuapp.com/";
 
 const routes = {
     GET_POSTS: `${backend}/publish`,

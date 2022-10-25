@@ -67,8 +67,8 @@ export default function Topbar() {
 
   return (
     <>
-      <CONTENT onClick={openLogOut}>
-      <img src={logo} alt="" />
+      <CONTENT>
+      <img src={logo} alt="" onClick={()=>{navigate("/timeline")}}/>
 
       <div>
         <DebounceInput
@@ -84,7 +84,7 @@ export default function Topbar() {
         {users.length > 0 ? <ReturnListUsers /> : ""}
       </div>
 
-      <USER>
+      <USER onClick={openLogOut}>
         {!isOpenLogOut ? <IoIosArrowDown onClick={openLogOut}/> : <IoIosArrowUp onClick={openLogOut}/>}
         <div>
           <img src={profilePic} alt="foto perfil" onClick={openLogOut} />

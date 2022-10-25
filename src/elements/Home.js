@@ -9,7 +9,7 @@ import routes from "../backendroutes";
 import { useParams } from "react-router-dom";
 
 export default function Home(){
-    const {token} = useContext(TokenContext);
+    const {token,setToken} = useContext(TokenContext);
     const id = useParams().id;
     const [posts,setPosts] = useState([]);
     const [message,setMessage] = useState("Loading...");
@@ -20,12 +20,20 @@ export default function Home(){
     const [disable,setDisable] = useState(false);
     const [buttontext,setButtontext] = useState("Publicar");
     useEffect(()=>{
-        if(id){
+      const tok = JSON.parse(localStorage.getItem("token"));
+      if(tok){
+        setToken(`Bearer ${tok}`);
+      }
+    });
+    useEffect(()=>{
+        if(token != null){
+          if(id){
             axios.get(routes.GET_POSTS_BYID(id), {headers: { Authorization: token }}).then((res)=>{res.data.length>0?setPosts(res.data):setMessage("There are no posts yet")})
             .catch((err)=>{console.error(err);alert("An error occured while trying to fetch the posts, please refresh the page")});
-        }else{
+          }else{
             axios.get(routes.GET_POSTS, {headers: { Authorization: token }}).then((res)=>{setUserimage(res.data.user[0].pictureUrl);(res.data.posts.length)>0?setPosts(res.data.posts):setMessage("There are no posts yet")})
             .catch((err)=>{console.error(err);alert("An error occured while trying to fetch the posts, please refresh the page")});
+          }
         }
     },[refresh,id,token]);
   function handleForm(e) {

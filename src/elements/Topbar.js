@@ -53,9 +53,9 @@ export default function Topbar() {
           {users.map((user, i) => {
             const { id, username, pictureUrl } = user;
             return (
-              <li key={i} id = {id}>
+              <li key={i} id = {id} onClick={() => { navigate(`/user/${id}`);setName("") }}>
                 <img src={pictureUrl} alt={name} />
-                <p onClick={() => { navigate(`/user/${id}`) }}>{username}</p>
+                <p>{username}</p>
               </li>
             );
           })}
@@ -72,6 +72,7 @@ export default function Topbar() {
 
       <div>
         <DebounceInput
+          value={name}
           type="text"
           placeholder="Search for people..."
           user="user"

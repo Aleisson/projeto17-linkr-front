@@ -20,7 +20,6 @@ function deleteLike(postId, userId) {
 
 
 async function getLikesMe(postId, userId) {
-
     const promise = await axios.get(
         `${BASE_URL}/like/${postId}/user/${userId}`,
 

@@ -14,6 +14,7 @@ function SignIn () {
 
     function logar (e) {
         e.preventDefault();
+        localStorage.clear();
         setDisableButton(true)
         const body = {
             email,
@@ -26,8 +27,12 @@ function SignIn () {
             setToken(res.data)
             navigate("/timeline")
             setDisableButton(false)
+            localStorage.setItem("token", JSON.stringify(res.data))
         })
-            response.catch(res => alert(res.response.data))
+            response.catch(res => {
+                alert(res.response.data)
+                setDisableButton(false)
+            })
         } else {
             alert("Preencha todos os campos!")
         }

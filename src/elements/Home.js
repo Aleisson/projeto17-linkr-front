@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import STYLES from "./styles/homestyles.js";
 import Post from "./Post";
 import Topbar from "./Topbar";
 import Trending from "./Trending";
@@ -67,23 +67,23 @@ export default function Home(){
   return (
     <>
       <Topbar />
-      <CONTENT>
-        <TOPTIMELINE>
+      <STYLES.CONTENT>
+        <STYLES.TOPTIMELINE>
           {posts.length > 0 && id ? `${posts[0].username}'s posts` : "timeline"}
-        </TOPTIMELINE>
-        <TIMELINE>
-          <POSTS>
+        </STYLES.TOPTIMELINE>
+        <STYLES.TIMELINE>
+          <STYLES.POSTS>
             {id ? null : (
-              <INSERTPOST>
-                <LEFTPOST>
-                  <USERIMAGE src={userimage} />
-                </LEFTPOST>
-                <RIGTHPOST>
-                  <INSERTPOSTMESSAGE>
+              <STYLES.INSERTPOST>
+                <STYLES.LEFTPOST>
+                  <STYLES.USERIMAGE src={userimage} />
+                </STYLES.LEFTPOST>
+                <STYLES.RIGTHPOST>
+                  <STYLES.INSERTPOSTMESSAGE>
                     What are you going to share today?
-                  </INSERTPOSTMESSAGE>
-                  <FORM onSubmit={handleForm}>
-                    <INPUT
+                  </STYLES.INSERTPOSTMESSAGE>
+                  <STYLES.FORM onSubmit={handleForm}>
+                    <STYLES.INPUT
                       h="30px"
                       disabled={disable}
                       value={inserturl}
@@ -92,7 +92,7 @@ export default function Home(){
                       placeholder="http://..."
                       required
                     />
-                    <INPUT
+                    <STYLES.INPUT
                       h="66px"
                       disabled={disable}
                       value={insertdesc}
@@ -100,129 +100,15 @@ export default function Home(){
                       type="text"
                       placeholder="Awesome article about #javascript"
                     />
-                    <BUTTON disabled={disable} type="submit">{buttontext}</BUTTON>
-                    </FORM>
-                        </RIGTHPOST>
-                    </INSERTPOST>)}
-                    {posts.length>0?posts.map((item,index)=>{return <Post key={index} id={item.id} content={item.content} link={item.link} url={item.pictureUrl} username={item.username} userid={item.userId}/>}):<MESSAGE>{message}</MESSAGE>}
-                </POSTS>
+                    <STYLES.BUTTON disabled={disable} type="submit">{buttontext}</STYLES.BUTTON>
+                    </STYLES.FORM>
+                        </STYLES.RIGTHPOST>
+                    </STYLES.INSERTPOST>)}
+                    {posts.length>0?posts.map((item,index)=>{return <Post key={index} id={item.id} content={item.content} link={item.link} url={item.pictureUrl} username={item.username} userid={item.userId}/>}):<STYLES.MESSAGE>{message}</STYLES.MESSAGE>}
+                </STYLES.POSTS>
                 <Trending/>
-            </TIMELINE>
-        </CONTENT>
+            </STYLES.TIMELINE>
+        </STYLES.CONTENT>
         </>
     );
 }
-
-const CONTENT = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 100vw;
-  min-height: calc(100vh - 72px);
-  height: fit-content;
-  margin-top: 72px;
-  padding: 0 16.66% 0 16.66%;
-`;
-const TOPTIMELINE = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  height: 160px;
-  width: 100%;
-  font-family: "Oswald", sans-serif;
-  font-size: 43px;
-  font-weight: bold;
-  color: #ffffff;
-`;
-const TIMELINE = styled.div`
-  display: flex;
-  justify-content: space-between;
-  width: 100%;
-  height: fit-content;
-`;
-
-const POSTS = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 64%;
-  height: fit-content;
-`;
-const INSERTPOST = styled.div`
-  display: flex;
-  height: 210px;
-  width: 100%;
-  margin: 0 0 30px 0;
-  padding: 18px 18px 18px 18px;
-  background-color: #ffffff;
-  border-radius: 15px;
-`;
-const LEFTPOST = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 14%;
-  height: 100%;
-`;
-const RIGTHPOST = styled.div`
-  width: 86%;
-  height: 100%;
-`;
-const USERIMAGE = styled.img`
-  width: 50px;
-  height: 50px;
-  border-radius: 27px;
-  margin-bottom: 20px;
-`;
-const INSERTPOSTMESSAGE = styled.div`
-  display: flex;
-  height: 40px;
-  width: 100%;
-  padding-top: 10px;
-  font-family: "Lato", sans-serif;
-  font-weight: lighter;
-  font-size: 20px;
-  color: #707070;
-`;
-const FORM = styled.form`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  height: calc(100% -55px);
-  width: 100%;
-`;
-const INPUT = styled.input`
-  width: 100%;
-  height: ${(props) => props.h};
-  margin-bottom: 5px;
-  padding-left: 10px;
-  background-color: #efefef;
-  border: none;
-  border-radius: 5px;
-  ::placeholder {
-    font-family: "Lato", sans-serif;
-    font-weight: lighter;
-    font-size: 15px;
-    color: #949494;
-  }
-`;
-const BUTTON = styled.button`
-  height: 31px;
-  width: 112px;
-  background-color: #1877f2;
-  border-radius: 5px;
-  border: none;
-  font-family: "Lato", sans-serif;
-  font-weight: bold;
-  font-size: 14px;
-  color: #ffffff;
-`;
-const MESSAGE = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 150px;
-  width: 100%;
-  font-family: "Lato", sans-serif;
-  font-weight: bold;
-  font-size: 25px;
-  color: #ffffff;
-`;

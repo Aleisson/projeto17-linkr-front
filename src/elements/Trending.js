@@ -25,21 +25,21 @@ export default function Trending(){
     }
 
 
-    return (
-        <>
-        <CONTENT>
-            <Title>Trending</Title>
+    return (null 
+        // <>
+        // <CONTENT>
+        //     <Title>Trending</Title>
 
-            <Box>
-                {topics.length>0 ?
-                topics.map((item, index) => 
-                <Hashtag key = {item.topicId} topicClick = {topic => navigateHashtag(topic)}>
-                    {`#${item.name}`}
-                </Hashtag>
-                ) : "No hashtag found"}
-            </Box>
-        </CONTENT>
-        </>
+        //     <Box>
+        //         {/* {topics.length>0 ?
+        //         topics.map((item, index) => 
+        //         <Hashtag key = {item.topicId} topicClick = {topic => navigateHashtag(topic)}>
+        //             {`#${item.name}`}
+        //         </Hashtag>
+        //         ) : "No hashtag found"} */}
+        //     </Box>
+        // </CONTENT>
+        // </>
     );
 }
 

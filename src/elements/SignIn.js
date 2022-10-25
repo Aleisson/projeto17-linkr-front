@@ -14,6 +14,7 @@ function SignIn () {
 
     function logar (e) {
         e.preventDefault();
+        localStorage.clear();
         setDisableButton(true)
         const body = {
             email,

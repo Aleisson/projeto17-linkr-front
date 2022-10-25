@@ -1,5 +1,3 @@
-import dotenv from "dotenv";
-dotenv.config();
 const backend = process.env.REACT_APP_URL_PROJECT;
 
 const routes = {

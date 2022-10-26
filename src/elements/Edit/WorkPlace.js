@@ -25,7 +25,16 @@ function WorkPlace() {
 
                 <h1>useRef</h1>
                 
-                    <input name='description' value={text} type='text' ref={inputRef} onChange={(e) => editDescription(e.target.value)}></input>
+                    <input name='description' value={text} type='text' ref={inputRef} onChange={(e) => editDescription(e.target.value)} onKeyDown={(e) =>{
+
+                        if(e.key === 'Enter'){
+                            alert(e.target.value);
+                        }
+                        if(e.key === 'Escape'){
+                            alert('Sai');
+                        }
+
+                    }}></input>
                 
 
 

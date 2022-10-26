@@ -53,22 +53,6 @@ export default function Post({ id, content, link, url, username, userid }) {
                             <STYLES.EDIT>
                                 <Pencil size={23} color="#FFFFFF" />
                                 <Trash3Fill size={23} color="#FFFFFF" />
-<<<<<<< HEAD
-                            </EDIT>
-                        </NAME>
-                        <DESCRIPTION>{content}</DESCRIPTION>
-                    </INFOS>
-                    <LINK onClick={() => { openInNewTab(link) }}>
-                        <INFOSLINK>
-                            <TITLE>{info.title}</TITLE>
-                            <DESC>{info.description}</DESC>
-                            <URL>{info.url}</URL>
-                        </INFOSLINK>
-                        <LOGOSITE alt="logo" src={image.url} />
-                    </LINK>
-                </RIGTH>
-            </CONTENT>
-=======
                             </STYLES.EDIT>
                         </STYLES.NAME>
                         <STYLES.DESCRIPTION><p>{content}</p></STYLES.DESCRIPTION>
@@ -83,7 +67,6 @@ export default function Post({ id, content, link, url, username, userid }) {
                     </STYLES.LINK>
                 </STYLES.RIGTH>
             </STYLES.CONTENT>
->>>>>>> 78657dc6000981cdcd96dd0aca4374e6d8926ce0
         </>
     );
 }

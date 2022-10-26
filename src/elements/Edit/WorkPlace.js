@@ -5,17 +5,24 @@ function WorkPlace() {
 
     const inputRef = useRef();
     const [text, setText] = useState("teste");
+    const [isEditing, setEditing] = useState(true);
     console.log(text)
     useEffect(() => {
+        if (isEditing) {
 
-        inputRef.current.focus();
+            inputRef.current.focus();
 
-    }, [])
+        }else{
+            inputRef.current.blur();
+        }
+
+
+    }, [isEditing])
 
     function editDescription(description) {
 
         setText(description);
-        
+
     }
 
     return (
@@ -24,18 +31,20 @@ function WorkPlace() {
             <CustomDiv>
 
                 <h1>useRef</h1>
-                
-                    <input name='description' value={text} type='text' ref={inputRef} onChange={(e) => editDescription(e.target.value)} onKeyDown={(e) =>{
 
-                        if(e.key === 'Enter'){
-                            alert(e.target.value);
-                        }
-                        if(e.key === 'Escape'){
-                            alert('Sai');
-                        }
+                <input name='description' value={text} type='text' ref={inputRef} onChange={(e) => editDescription(e.target.value)} onKeyDown={(e) => {
 
-                    }}></input>
-                
+                    if (e.key === 'Enter') {
+                        alert(e.target.value);
+                        setEditing(false);
+                    }
+                    if (e.key === 'Escape') {
+                        alert('Sai');
+                        setEditing(false);
+                    }
+
+                }}></input>
+
 
 
 

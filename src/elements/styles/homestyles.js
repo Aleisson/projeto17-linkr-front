@@ -12,7 +12,7 @@ const CONTENT = styled.div`
 const TOPTIMELINE = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   height: 160px;
   width: 100%;
   font-family: "Oswald", sans-serif;
@@ -114,19 +114,37 @@ const MESSAGE = styled.div`
   color: #ffffff;
 `;
 
+const BUTTONFOLLOW = styled.div`
+  width: 112px;
+  height: 31px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-family: "Lato", sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 17px;
+
+  color: #ffffff;
+  background: #1877f2;
+  border-radius: 5px;
+`;
+
 const STYLES = {
-    CONTENT: CONTENT,
-    TOPTIMELINE: TOPTIMELINE,
-    TIMELINE: TIMELINE,
-    POSTS: POSTS,
-    INSERTPOST: INSERTPOST,
-    LEFTPOST: LEFTPOST,
-    RIGTHPOST: RIGTHPOST,
-    USERIMAGE: USERIMAGE,
-    INSERTPOSTMESSAGE: INSERTPOSTMESSAGE,
-    FORM: FORM,
-    INPUT: INPUT,
-    BUTTON: BUTTON,
-    MESSAGE: MESSAGE
-}
+  CONTENT,
+  TOPTIMELINE,
+  TIMELINE,
+  POSTS,
+  INSERTPOST,
+  LEFTPOST,
+  RIGTHPOST,
+  USERIMAGE,
+  INSERTPOSTMESSAGE,
+  FORM,
+  INPUT,
+  BUTTON,
+  MESSAGE,
+  BUTTONFOLLOW,
+};
 export default STYLES;

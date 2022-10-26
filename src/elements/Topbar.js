@@ -1,20 +1,22 @@
-import styled from "styled-components";
+import STYLES from "./styles/topbarstyles";
 import axios from "axios";
 import logo from "../assets/imgs/linkr.svg";
 import { DebounceInput } from "react-debounce-input";
 import { IoIosArrowDown, IoIosArrowUp } from "react-icons/io";
 import { GoSearch } from "react-icons/go";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import TokenContext from "../contexts/TokenContext";
+import routes from "../backendroutes";
 
 export default function Topbar() {
+  const {token} = useContext(TokenContext);
   const [name, setName] = useState("");
   const [users, setUsers] = useState([]);
   const [isOpenLogOut, setIsOpenLogOut] = useState(false);
   const [profilePic, setProfilePic] = useState('');
   const navigate = useNavigate();
-  const URL = process.env.REACT_APP_URL_PROJECT;
-
+  
   function openLogOut () {
    if (isOpenLogOut) {
     setIsOpenLogOut(false)
@@ -28,13 +30,17 @@ export default function Topbar() {
     localStorage.clear();
     navigate("/")
   }
-
+  useEffect(() => {
+    if(token){
+      axios.get(routes.GET_POSTS, {headers: { Authorization: token }}).then((res)=>{setProfilePic(res.data.user[0].pictureUrl)})
+      .catch((err)=>{console.error(err)});
+    }
+ },[token]);
   useEffect(() => {
     if(name.length > 2){
-      const promise = axios.get(`${URL}/seachUser/${name}`);
+      const promise = axios.get(routes.SEARCH_USER_BY_NAME(name));
 
       promise.then((res) => {
-        setProfilePic(res.data[0].pictureUrl);
         setUsers(res.data);
         ReturnListUsers();
       });
@@ -49,7 +55,7 @@ export default function Topbar() {
   function ReturnListUsers() {
     if (name.length > 2) {
       return (
-        <BoxUsers>
+        <STYLES.BoxUsers>
           {users.map((user, i) => {
             const { id, username, pictureUrl } = user;
             return (
@@ -59,16 +65,16 @@ export default function Topbar() {
               </li>
             );
           })}
-        </BoxUsers>
+        </STYLES.BoxUsers>
       );
     }
-    return <BoxUsers></BoxUsers>;
+    return <STYLES.BoxUsers></STYLES.BoxUsers>;
   }
 
   return (
     <>
-      <CONTENT onClick={openLogOut}>
-      <img src={logo} alt="" />
+      <STYLES.CONTENT>
+      <img src={logo} alt="" onClick={()=>{navigate("/timeline")}}/>
 
       <div>
         <DebounceInput
@@ -84,137 +90,16 @@ export default function Topbar() {
         {users.length > 0 ? <ReturnListUsers /> : ""}
       </div>
 
-      <USER>
+      <STYLES.USER onClick={openLogOut}>
         {!isOpenLogOut ? <IoIosArrowDown onClick={openLogOut}/> : <IoIosArrowUp onClick={openLogOut}/>}
         <div>
           <img src={profilePic} alt="foto perfil" onClick={openLogOut} />
         </div>
-      </USER>
-    </CONTENT>
-    {isOpenLogOut ? <LogOut>
+      </STYLES.USER>
+    </STYLES.CONTENT>
+    {isOpenLogOut ? <STYLES.LogOut>
     <h1 onClick={logOut}>Logout</h1>
-    </LogOut> : ''}
+    </STYLES.LogOut> : ''}
     </>
   );
 }
-
-const CONTENT = styled.header`
-  position: fixed;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding-right: 10px;
-  padding-left: 28px;
-  left: 0;
-  top: 0;
-  z-index: 1;
-  height: 72px;
-  width: 100vw;
-  background-color: #151515;
-  img {
-    width: 108px;
-    height: 50px;
-  }
-  div {
-    position: relative;
-    width: 563px;
-    height: 45px;
-    input {
-      display: flex;
-      align-items: center;
-      width: 563px;
-      height: 45px;
-      padding: 14px;
-
-      background-color: #ffffff;
-      border-radius: 8px;
-      border: none;
-
-      ::placeholder {
-        font-family: "Lato", sans-serif;
-        display: flex;
-        align-items: center;
-        font-size: 19px;
-        line-height: 23px;
-        color: #c6c6c6;
-      }
-    }
-    svg {
-      position: absolute;
-      right: 15px;
-      top: 13px;
-      width: 21px;
-      height: 21px;
-      cursor: pointer;
-      color: #c6c6c6;
-    }
-  }
-`;
-
-const BoxUsers = styled.ul`
-  border-radius: 8px;
-  background: #e7e7e7;
-  li {
-    width: 563px;
-    height: 45px;
-    padding: 14px 17px;
-
-    display: flex;
-    align-items: center;
-
-    img {
-      width: 39px;
-      height: 39px;
-      margin-right: 14px;
-      border-radius: 50%;
-    }
-
-    p {
-      font-family: "Lato", sans-serif;
-      font-size: 17px;
-      line-height: 23px;
-
-      color: #515151;
-    }
-  }
-`;
-
-const USER = styled.section`
-  width: 80px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  svg {
-    color: #ffffff;
-  }
-  img {
-    border-radius: 50%;
-    width: 53px;
-    height: 53px;
-  }
-  div {
-    border-radius: 50%;
-    width: 53px;
-    height: 53px;
-    background-color: blueviolet;
-  }
-`;
-
-const LogOut = styled.div`
-  background-color: #171717;
-  width: 130px;
-  height: 47px;
-  border-bottom-left-radius: 15px;
-  position: fixed;
-  right: 0%;
-
-  display: flex;
-  justify-content: center;
-  align-items: center;
-
-    h1 {
-      font-family: "Lato", sans-serif;
-      font-size: 17px;
-      color: white;
-    }
-`;

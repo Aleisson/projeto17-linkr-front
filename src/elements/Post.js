@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { Pencil, Trash3Fill } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import { Like } from "./Likes/Like.js";
+import { ReactTagify } from "react-tagify";
+
 import { Edit } from './Edit/Edit.js';
 export default function Post({ id, content, link, url, username, userid }) {
     const [image, setImage] = useState(Object);
@@ -19,7 +21,7 @@ export default function Post({ id, content, link, url, username, userid }) {
     function changeEdit(isEditing) {
         setEditing(isEditing)
     }
-  
+
 
     useEffect(() => {
         mql(link).then((res) => {
@@ -31,18 +33,6 @@ export default function Post({ id, content, link, url, username, userid }) {
             });
         }).catch((err) => { console.error(err) });
     }, [link]);
-
-    // function getHashtagsInPost(descriptionText){
-    //     hashtagFeature = /(?:^|\s)(?:#)([a-zA-z\d]+)/gm; //identifica o que é dentro da description o que é a parte da hashtag. 
-    //     let topics = [];
-    //     let check;
-    //     while(check = hashtagFeature.exc(descriptionText)){
-    //         topics.push(check[1]);
-    //     }
-    //     return topics;
-    // }
-
-
 
 
     return (
@@ -61,12 +51,21 @@ export default function Post({ id, content, link, url, username, userid }) {
                                 <Trash3Fill size={23} color="#FFFFFF" />
                             </STYLES.EDIT>
                         </STYLES.NAME>
+
                         <STYLES.DESCRIPTION><Edit
                             id={id}
                             userId={userid}
                             content={content}
                             isEditing={isEditing}
                             changeEdit={changeEdit} />
+                            <p>
+                                <ReactTagify
+                                    tagStyle={tagStyle}
+                                    tagClick={(tag) => navigate(`/hashtag/${tag.slice(1)}`)}
+                                >
+                                    {content}
+                                </ReactTagify>
+                            </p>
                         </STYLES.DESCRIPTION>
                     </STYLES.INFOS>
                     <STYLES.LINK onClick={() => { openInNewTab(link) }}>
@@ -79,6 +78,13 @@ export default function Post({ id, content, link, url, username, userid }) {
                     </STYLES.LINK>
                 </STYLES.RIGTH>
             </STYLES.CONTENT>
+
         </>
     );
 }
+
+const tagStyle = {
+    color: "#FFFFFF",
+    margin: "0px 2px",
+    cursor: "pointer",
+};

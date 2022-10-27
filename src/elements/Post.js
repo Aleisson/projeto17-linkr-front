@@ -4,13 +4,12 @@ import { useEffect, useState } from "react";
 import { Pencil, Trash3Fill } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import { Like } from "./Likes/Like.js";
+import { ReactTagify } from "react-tagify";
 
 export default function Post({ id, content, link, url, username, userid }) {
     const [image, setImage] = useState(Object);
     const [info, setInfo] = useState(Object);
     const navigate = useNavigate();
-    //const topics = getHashtagsInPost(setInfo);
-    //Maria Clara : eu não entendi como as informações do post dentro da descrição estão sendo enviadas, pensei em colocar no UseEffec dentro do setinfo o topic, mas não faz sentido, não sei como implementar essa parte. 
     const openInNewTab = url => {
         window.open(url, '_blank', 'noopener,noreferrer');
     }
@@ -24,18 +23,6 @@ export default function Post({ id, content, link, url, username, userid }) {
             });
         }).catch((err) => { console.error(err) });
     }, [link]);
-
-    // function getHashtagsInPost(descriptionText){
-    //     hashtagFeature = /(?:^|\s)(?:#)([a-zA-z\d]+)/gm; //identifica o que é dentro da description o que é a parte da hashtag. 
-    //     let topics = [];
-    //     let check;
-    //     while(check = hashtagFeature.exc(descriptionText)){
-    //         topics.push(check[1]);
-    //     }
-    //     return topics;
-    // }
-
-
 
 
     return (
@@ -54,7 +41,16 @@ export default function Post({ id, content, link, url, username, userid }) {
                                 <Trash3Fill size={23} color="#FFFFFF" />
                             </STYLES.EDIT>
                         </STYLES.NAME>
-                        <STYLES.DESCRIPTION><p>{content}</p></STYLES.DESCRIPTION>
+                        <STYLES.DESCRIPTION>
+                            <p>
+                                <ReactTagify
+                                    tagStyle={tagStyle}
+                                    tagClick={(tag) => navigate(`/hashtag/${tag.slice(1)}`)}
+                                >
+                                    {content}
+                                </ReactTagify>
+                            </p>
+                        </STYLES.DESCRIPTION>
                     </STYLES.INFOS>
                     <STYLES.LINK onClick={() => { openInNewTab(link) }}>
                         <STYLES.INFOSLINK>
@@ -66,6 +62,13 @@ export default function Post({ id, content, link, url, username, userid }) {
                     </STYLES.LINK>
                 </STYLES.RIGTH>
             </STYLES.CONTENT>
+            
         </>
     );
 }
+
+const tagStyle = {
+    color: "#FFFFFF",
+    margin: "0px 2px",
+    cursor: "pointer",
+};

@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import SignIn from "./elements/SignIn";
 import SignUp from "./elements/SignUp";
 import Home from "./elements/Home";
+import Hashtag from "./elements/Hashtag";
 import TokenContext from "./contexts/TokenContext";
 import { useState } from "react";
 
@@ -20,6 +21,8 @@ export default function App(){
         <Route path="/signup" element={<SignUp/>}/>
         <Route path="/timeline" element={<Home/>}/>
         <Route path="/user/:id" element={<Home/>}/>
+        <Route path= "/hashtag/:id" element={<Hashtag/>}/>
+
       </Routes>
     </BrowserRouter>
     </TokenContext.Provider>

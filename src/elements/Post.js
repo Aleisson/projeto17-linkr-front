@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { Pencil, Trash3Fill } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import { Like } from "./Likes/Like.js";
-
+import { Edit } from './Edit/Edit.js';
 export default function Post({ id, content, link, url, username, userid }) {
     const [image, setImage] = useState(Object);
     const [info, setInfo] = useState(Object);
@@ -19,7 +19,7 @@ export default function Post({ id, content, link, url, username, userid }) {
     function changeEdit(isEditing) {
         setEditing(isEditing)
     }
-
+    console.log(isEditing);
 
     useEffect(() => {
         mql(link).then((res) => {
@@ -57,11 +57,17 @@ export default function Post({ id, content, link, url, username, userid }) {
                         <STYLES.NAME>
                             <p onClick={() => { navigate(`/user/${userid}`) }}>{username}</p>
                             <STYLES.EDIT>
-                                <Pencil size={23} color="#FFFFFF" />
+                                <Pencil onClick={() => { changeEdit(!isEditing) }} size={23} color="#FFFFFF" />
                                 <Trash3Fill size={23} color="#FFFFFF" />
                             </STYLES.EDIT>
                         </STYLES.NAME>
-                        <STYLES.DESCRIPTION><p>{content}</p></STYLES.DESCRIPTION>
+                        <STYLES.DESCRIPTION><Edit
+                            id={id}
+                            userId={userid}
+                            content={content}
+                            isEditing={isEditing}
+                            changeEdit={changeEdit} />
+                        </STYLES.DESCRIPTION>
                     </STYLES.INFOS>
                     <STYLES.LINK onClick={() => { openInNewTab(link) }}>
                         <STYLES.INFOSLINK>

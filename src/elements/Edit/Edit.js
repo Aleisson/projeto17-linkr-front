@@ -1,5 +1,5 @@
 import { useRef, useEffect, useState } from 'react';
-import { CustomDiv, CustomInput } from './style/edit.Style.js';
+import { CustomInput } from './style/edit.Style.js';
 import { editPost } from '../../services/edit.services.js';
 
 function Edit({ id, userId, content, isEditing, changeEdit }) {
@@ -34,56 +34,50 @@ function Edit({ id, userId, content, isEditing, changeEdit }) {
 
     return (
         <>
-            <CustomDiv>
+            <CustomInput
 
 
+                backGround={isEditing ? '#FFFFFF' : '#171717'}
 
-                <CustomInput
+                disabled={isEditing && disabled ? false : true}
 
+                name='description'
 
-                    backGround={isEditing ? '#FFFFFF' : '#171717'}
+                value={text}
 
-                    disabled={isEditing && disabled ? false : true}
+                type='text'
 
-                    name='description'
+                ref={inputRef}
 
-                    value={text}
+                onChange={(e) => editDescription(e.target.value)}
 
-                    type='text'
+                onKeyDown={(e) => {
 
-                    ref={inputRef}
+                    if (e.key === 'Enter') {
 
-                    onChange={(e) => editDescription(e.target.value)}
+                        setDisabled(false);
 
-                    onKeyDown={(e) => {
+                        const promise = editPost(id, userId, text);
 
-                        if (e.key === 'Enter') {
-
-                            setDisabled(false);
-
-                            const promise = editPost(id, userId, text);
-
-                            promise.then(() => {
-                                setDisabled(true);
-                                changeEdit(false);
-                                setSave(text);
-                            })
-
-                            promise.catch((e) => {
-                                console.error(e);
-                                setDisabled(true);
-                                changeEdit(true);
-                                alert('Não foi possível alterar contéudo, por favor tente novamente');
-                            })
-                        }
-                        if (e.key === 'Escape') {
+                        promise.then(() => {
+                            setDisabled(true);
                             changeEdit(false);
-                            setText(save);
-                        }
+                            setSave(text);
+                        })
 
-                    }}></CustomInput>
+                        promise.catch((e) => {
+                            console.error(e);
+                            setDisabled(true);
+                            changeEdit(true);
+                            alert('Não foi possível alterar contéudo, por favor tente novamente');
+                        })
+                    }
+                    if (e.key === 'Escape') {
+                        changeEdit(false);
+                        setText(save);
+                    }
 
-            </CustomDiv>
+                }}></CustomInput>
         </>
     );
 }

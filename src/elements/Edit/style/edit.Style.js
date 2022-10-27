@@ -1,27 +1,27 @@
 import styled from "styled-components";
 
 
-const CustomDiv = styled.div`
+// const CustomDiv = styled.div`
 
-    background-color:#4D4D4D;
-    height: 200px;
-    width:50%;
-    margin:auto;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    justify-content:space-around;
-    padding:20px;
+//     background-color:#4D4D4D;
+//     height: 200px;
+//     width:50%;
+//     margin:auto;
+//     display:flex;
+//     flex-direction:column;
+//     justify-content:center;
+//     justify-content:space-around;
+//     padding:20px;
     
     
 
-`
+// `
 
 const CustomInput = styled.input`
     
     display: flex;
-    height: 275px;
     width: 100%;
+    height:40%;
     border-radius:16px;
     margin: 0 0 16px 0;
     padding: 18px 18px 18px 18px;
@@ -38,5 +38,5 @@ const CustomInput = styled.input`
 `;
 
 
-export { CustomDiv, CustomInput };
+export { CustomInput };
 

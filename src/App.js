@@ -6,7 +6,6 @@ import SignUp from "./elements/SignUp";
 import Home from "./elements/Home";
 import TokenContext from "./contexts/TokenContext";
 import { useState } from "react";
-import { WorkPlace } from "./elements/Edit/WorkPlace.js";
 export default function App() {
   const [token, setToken] = useState(null);
 

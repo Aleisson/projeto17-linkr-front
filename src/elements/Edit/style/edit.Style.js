@@ -26,7 +26,6 @@ const CustomInput = styled.input`
     margin: 0 0 16px 0;
     padding: 18px 18px 18px 18px;
     background-color: ${props => props.backGround};
-    border-radius: 15px;
     border-style: none;
     font-family: 'Lato';
     font-style: normal;
@@ -34,6 +33,7 @@ const CustomInput = styled.input`
     font-size: 14px;
     line-height: 17px;
     color: #4C4C4C;
+    outline:none;
 
 `;
 

@@ -20,7 +20,6 @@ export default function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/timeline" element={<Home />} />
             <Route path="/user/:id" element={<Home />} />
-            <Route path="/workplace" element={< WorkPlace />} />
           </Routes>
         </BrowserRouter>
       </TokenContext.Provider>

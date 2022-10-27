@@ -6,13 +6,23 @@ import { useNavigate } from "react-router-dom";
 import { Like } from "./Likes/Like.js";
 import { ReactTagify } from "react-tagify";
 
+import { Edit } from './Edit/Edit.js';
 export default function Post({ id, content, link, url, username, userid }) {
     const [image, setImage] = useState(Object);
     const [info, setInfo] = useState(Object);
     const navigate = useNavigate();
+    const [isEditing, setEditing] = useState(false);
+    //const topics = getHashtagsInPost(setInfo);
+    //Maria Clara : eu não entendi como as informações do post dentro da descrição estão sendo enviadas, pensei em colocar no UseEffec dentro do setinfo o topic, mas não faz sentido, não sei como implementar essa parte. 
     const openInNewTab = url => {
         window.open(url, '_blank', 'noopener,noreferrer');
     }
+
+    function changeEdit(isEditing) {
+        setEditing(isEditing)
+    }
+
+
     useEffect(() => {
         mql(link).then((res) => {
             setImage(res.data.logo)
@@ -37,11 +47,17 @@ export default function Post({ id, content, link, url, username, userid }) {
                         <STYLES.NAME>
                             <p onClick={() => { navigate(`/user/${userid}`) }}>{username}</p>
                             <STYLES.EDIT>
-                                <Pencil size={23} color="#FFFFFF" />
+                                <Pencil onClick={() => { changeEdit(!isEditing) }} size={23} color="#FFFFFF" />
                                 <Trash3Fill size={23} color="#FFFFFF" />
                             </STYLES.EDIT>
                         </STYLES.NAME>
-                        <STYLES.DESCRIPTION>
+
+                        <STYLES.DESCRIPTION><Edit
+                            id={id}
+                            userId={userid}
+                            content={content}
+                            isEditing={isEditing}
+                            changeEdit={changeEdit} />
                             <p>
                                 <ReactTagify
                                     tagStyle={tagStyle}
@@ -62,7 +78,7 @@ export default function Post({ id, content, link, url, username, userid }) {
                     </STYLES.LINK>
                 </STYLES.RIGTH>
             </STYLES.CONTENT>
-            
+
         </>
     );
 }

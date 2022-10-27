@@ -19,7 +19,7 @@ export default function Post({ id, content, link, url, username, userid }) {
     function changeEdit(isEditing) {
         setEditing(isEditing)
     }
-    console.log(isEditing);
+  
 
     useEffect(() => {
         mql(link).then((res) => {

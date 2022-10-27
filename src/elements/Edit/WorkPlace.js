@@ -8,7 +8,7 @@ function WorkPlace() {
     return (
 
         <>
-            <Edit />
+            <Edit id={3} userId={1} content={'texto atual'} />
         </>
     );
 

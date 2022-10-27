@@ -1,13 +1,18 @@
 import { useRef, useEffect, useState } from 'react';
-import { CustomDiv, CustomInput } from './style/edit.Style.js'
-function Edit() {
+import { CustomDiv, CustomInput } from './style/edit.Style.js';
+import { editPost } from '../../services/edit.services.js';
+
+function Edit({ id, userId, content }) {
 
 
     const inputRef = useRef();
-    const [text, setText] = useState("teste");
+    const [text, setText] = useState(content);
+    const [save, setSave] = useState(content);
+    const [disabled, setDisabled] = useState(true);
     const [isEditing, setEditing] = useState(false);
-    console.log(text)
+
     useEffect(() => {
+       
         if (isEditing) {
 
             inputRef.current.focus();
@@ -17,7 +22,7 @@ function Edit() {
         }
 
 
-    }, [isEditing])
+    })
 
     function editDescription(description) {
 
@@ -25,41 +30,64 @@ function Edit() {
 
     }
 
+    function clickEdit() {
+        setEditing(isEditing => !isEditing);
+        setText(save);
+    }
+
     return (
         <>
             <CustomDiv>
 
-                <button onClick={() => { setEditing(isEditing => !isEditing) }}>edit</button>
+                <button onClick={clickEdit}>edit</button>
 
                 <CustomInput
 
 
                     backGround={isEditing ? '#FFFFFF' : '#171717'}
-                    disabled={isEditing ? false : true}
-                    name='description' value={text}
+                    
+                    disabled={isEditing && disabled? false : true}
+
+                    name='description'
+
+                    value={text}
 
                     type='text'
-                   
+
                     ref={inputRef}
+
                     onChange={(e) => editDescription(e.target.value)}
+
                     onKeyDown={(e) => {
 
                         if (e.key === 'Enter') {
-                            alert(e.target.value);
-                            setEditing(false);
+                            
+                            setDisabled(false);
+
+                            const promise = editPost(id, userId, text);
+                            
+                            promise.then(() => {
+                                setDisabled(true);
+                                setEditing(false);
+                                setSave(text);
+                            })
+
+                            promise.catch((e) => {
+                                console.error(e);
+                                setDisabled(true);
+                                setEditing(true);
+                                alert('Não foi possível alterar contéudo, por favor tente novamente');                                
+                            })
                         }
                         if (e.key === 'Escape') {
-                            alert('Sai');
                             setEditing(false);
+                            setText(save);
                         }
 
                     }}></CustomInput>
-
-
-
 
             </CustomDiv>
         </>
     );
 }
-export { Edit }
+export { Edit };

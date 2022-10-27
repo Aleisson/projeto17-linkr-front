@@ -11,7 +11,7 @@ export default function Trending(){
 
     useEffect( () => {
         axios.get(routes.GET_HASHTAGS)
-        .then(res => {
+        .then(res => {console.log(res.data);
             setTopics(res.data);
         })
         .catch(error => {

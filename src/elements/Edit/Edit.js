@@ -26,30 +26,40 @@ function Edit() {
     }
 
     return (
-        <CustomInput
+        <>
+            <CustomDiv>
+
+                <button onClick={() => { setEditing(isEditing => !isEditing) }}>edit</button>
+
+                <CustomInput
 
 
-            backGround={isEditing ? '#FFFFFF' : '#171717'}
-            disabled={isEditing ? false : true}
-            name='description' value={text}
+                    backGround={isEditing ? '#FFFFFF' : '#171717'}
+                    disabled={isEditing ? false : true}
+                    name='description' value={text}
 
-            type='text'
+                    type='text'
+                   
+                    ref={inputRef}
+                    onChange={(e) => editDescription(e.target.value)}
+                    onKeyDown={(e) => {
 
-            ref={inputRef}
-            onChange={(e) => editDescription(e.target.value)}
-            onKeyDown={(e) => {
+                        if (e.key === 'Enter') {
+                            alert(e.target.value);
+                            setEditing(false);
+                        }
+                        if (e.key === 'Escape') {
+                            alert('Sai');
+                            setEditing(false);
+                        }
 
-                if (e.key === 'Enter') {
-                    alert(e.target.value);
-                    setEditing(false);
-                }
-                if (e.key === 'Escape') {
-                    alert('Sai');
-                    setEditing(false);
-                }
+                    }}></CustomInput>
 
-            }}></CustomInput>
 
-    )
+
+
+            </CustomDiv>
+        </>
+    );
 }
 export { Edit }

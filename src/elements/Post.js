@@ -9,11 +9,17 @@ export default function Post({ id, content, link, url, username, userid }) {
     const [image, setImage] = useState(Object);
     const [info, setInfo] = useState(Object);
     const navigate = useNavigate();
+    const [isEditing, setEditing] = useState(false);
     //const topics = getHashtagsInPost(setInfo);
     //Maria Clara : eu não entendi como as informações do post dentro da descrição estão sendo enviadas, pensei em colocar no UseEffec dentro do setinfo o topic, mas não faz sentido, não sei como implementar essa parte. 
     const openInNewTab = url => {
         window.open(url, '_blank', 'noopener,noreferrer');
     }
+
+    function changeEdit(isEditing) {
+        setEditing(isEditing)
+    }
+
 
     useEffect(() => {
         mql(link).then((res) => {

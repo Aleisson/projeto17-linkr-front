@@ -1,14 +1,11 @@
-import { Edit } from './Edit.js'
-
+import Post from '../Post.js'
 function WorkPlace() {
-
-
 
 
     return (
 
         <>
-            <Edit id={3} userId={1} content={'texto atual'} />
+            <Post id={3} content={'Testo qualquer'} link={'https://www.youtube.com/'} userid={1}/>
         </>
     );
 

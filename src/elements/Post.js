@@ -5,7 +5,7 @@ import { Pencil, Trash3Fill } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import { Like } from "./Likes/Like.js";
 import { Edit } from './Edit/Edit.js';
-export default function Post({ id, content, link, url, username, userid }) {
+export default function Post({id, content, link, url, username, userid, handleRemove, index }) {
     const [image, setImage] = useState(Object);
     const [info, setInfo] = useState(Object);
     const navigate = useNavigate();
@@ -19,7 +19,7 @@ export default function Post({ id, content, link, url, username, userid }) {
     function changeEdit(isEditing) {
         setEditing(isEditing)
     }
-  
+
 
     useEffect(() => {
         mql(link).then((res) => {
@@ -58,7 +58,7 @@ export default function Post({ id, content, link, url, username, userid }) {
                             <p onClick={() => { navigate(`/user/${userid}`) }}>{username}</p>
                             <STYLES.EDIT>
                                 <Pencil onClick={() => { changeEdit(!isEditing) }} size={23} color="#FFFFFF" />
-                                <Trash3Fill size={23} color="#FFFFFF" />
+                                <Trash3Fill onClick={() => handleRemove(index)} size={23} color="#FFFFFF" />
                             </STYLES.EDIT>
                         </STYLES.NAME>
                         <STYLES.DESCRIPTION><Edit

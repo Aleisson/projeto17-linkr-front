@@ -8,8 +8,7 @@ const routes = {
     GET_HASHTAGS: `${backend}/hashtag`,
     SEARCH_USER_BY_NAME: (name)=>{return `${backend}/seachUser/${name}`},
     GET_HASHTAGS_BY_ID: (topic) =>{return `${backend}/hashtag/${topic}`},
-    GET_POSTS_BYID: (id)=>{return `${backend}/getposts/${id}`
-    
-    }
+    GET_POSTS_BYID: (id)=>{return `${backend}/getposts/${id}`},
+    COMMENTS: (id)=>{return `${backend}/comment/${id}`}
 }
 export default routes;

@@ -9,7 +9,7 @@ const CONTENT = styled.header`
   padding-left: 28px;
   left: 0;
   top: 0;
-  z-index: 1;
+  z-index: 2;
   height: 72px;
   width: 100vw;
   background-color: #151515;

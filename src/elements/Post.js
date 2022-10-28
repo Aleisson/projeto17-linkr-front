@@ -61,7 +61,7 @@ export default function Post({ id, content, link, url, username, userid }) {
                             <p>
                                 <ReactTagify
                                     tagStyle={tagStyle}
-                                    tagClick={(tag) => navigate(`/hashtag/${tag.slice(1)}`)}
+                                    tagClicked={(tag) => navigate(`/hashtag/${tag.slice(1)}`)}
                                 >
                                     {content}
                                 </ReactTagify>

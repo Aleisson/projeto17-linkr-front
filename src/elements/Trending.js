@@ -1,28 +1,32 @@
 import styled from "styled-components";
-import {useEffect, useState} from 'react';
-import { useNavigate } from "react-router-dom";
+import {useEffect, useState, useContext} from 'react';
+import {Link} from "react-router-dom";
+//import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import {ReactTagify as Hashtag} from 'react-tagify';
+import TokenContex from "../contexts/TokenContext.js";
 import routes from "../backendroutes";
 
 export default function Trending(){
+    const {setToken} = useContext(TokenContex)
     const [topics, setTopics] = useState([]);
-    const navigate = useNavigate();
+    //const navigate = useNavigate();
+    
 
     useEffect( () => {
         axios.get(routes.GET_HASHTAGS)
-        .then(res => {
+        .then((res) => {
             setTopics(res.data);
         })
-        .catch(error => {
-            console.log(error);
-        })
-    }, []);
+        .catch((error) => {
+            if(error.response.status === 500){
+                return alert ("Não foi possível se conectar")
+            }
+        });
+    }, [setToken]);
+    console.log(topics);
+    console.log(setTopics);
 
-    function navigateHashtag(topic){
-        const trendingTopics = topic.replace("#", "");
-        navigate(`/hashtag/${trendingTopics}`);
-    }
+    
 
 
     return (    
@@ -30,12 +34,13 @@ export default function Trending(){
             <Title>Trending</Title>
 
             <Box>
-                {topics.length>0 ?
-                topics.map((item, index) => 
-                <Hashtag key = {item.topicId} topicClick = {topic => navigateHashtag(topic)}>
-                    {`#${item.name}`}
-                </Hashtag>
-                ) : "No hashtag found"}
+                {topics.length > 0 ? (
+                    topics.map((topic, index) => (
+                        <Link to={`/hashtag/${topic.name}`} key={index}>
+                            <h2> # {topic.name}</h2>
+                        </Link>
+                    ))
+                ) : (<h2>Não há tópicos ainda</h2>)}
             </Box>
         </CONTENT>
     );

@@ -7,6 +7,7 @@ import TokenContext from "../contexts/TokenContext";
 import { useContext, useEffect, useState } from "react";
 import routes from "../backendroutes";
 import { useParams } from "react-router-dom";
+import { deletePost } from '../services/delete.services.js';
 
 export default function Home() {
   const { token, setToken } = useContext(TokenContext);
@@ -67,6 +68,9 @@ export default function Home() {
 
   function handleRemove(index, postId) {
     setPosts(posts.filter((item, i) => i !== index));
+    const promise = deletePost(postId);
+    promise.then(res => alert('Post deletado'));
+    promise.catch(res => alert('Erro deleção'));
   }
 
   return (

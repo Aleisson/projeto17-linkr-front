@@ -58,7 +58,7 @@ export default function Post({id, content, link, url, username, userid, handleRe
                             <p onClick={() => { navigate(`/user/${userid}`) }}>{username}</p>
                             <STYLES.EDIT>
                                 <Pencil onClick={() => { changeEdit(!isEditing) }} size={23} color="#FFFFFF" />
-                                <Trash3Fill onClick={() => handleRemove(index)} size={23} color="#FFFFFF" />
+                                <Trash3Fill onClick={() => handleRemove(index, id)} size={23} color="#FFFFFF" />
                             </STYLES.EDIT>
                         </STYLES.NAME>
                         <STYLES.DESCRIPTION><Edit

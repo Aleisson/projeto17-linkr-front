@@ -32,7 +32,7 @@ export default function Trending(){
             <Box>
                 {topics.length > 0 ? (
                     topics.map((topic, index) => (
-                        <p onClick= {() => {navigate(`/hashtag/${topic.name}`
+                        <p key={index} onClick= {() => {navigate(`/hashtag/${topic.id}`
                         )}}>
                             <h2> # {topic.name}</h2>
                             </p>

@@ -1,15 +1,23 @@
 import STYLES from "./styles/poststyles.js";
 import mql from '@microlink/mql'
-import { useEffect, useState } from "react";
-import { Pencil, Trash3Fill } from "react-bootstrap-icons";
+import routes from "../backendroutes.js";
+import { useContext, useEffect, useState } from "react";
+import { Pencil, Trash3Fill, Cursor, ChatDots } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import { Like } from "./Likes/Like.js";
 import { ReactTagify } from "react-tagify";
 
 import { Edit } from './Edit/Edit.js';
+import axios from "axios";
+import TokenContext from "../contexts/TokenContext.js";
 export default function Post({ id, content, link, url, username, userid }) {
+    const {token} = useContext(TokenContext);
     const [image, setImage] = useState(Object);
     const [info, setInfo] = useState(Object);
+    const [comments,setComments] = useState([]);
+    const [writecomment, setWritecomment] = useState("");
+    const [update,setUṕdate] = useState(false);
+    const [chatopen, setChatopen] = useState(false);
     const navigate = useNavigate();
     const [isEditing, setEditing] = useState(false);
     //const topics = getHashtagsInPost(setInfo);
@@ -34,13 +42,31 @@ export default function Post({ id, content, link, url, username, userid }) {
         }).catch((err) => { console.error(err) });
     }, [link]);
 
+    useEffect(()=>{
+        axios.get(routes.COMMENTS(id),{ headers: { Authorization: token }})
+        .then((res)=>{setComments(res.data)}).catch(err => console.log(err));
+    },[update,id,token]);
+
+    function handleForm(e){
+        e.preventDefault();
+        const objpost = {
+            comment: writecomment
+        };
+        axios.post(routes.COMMENTS(id),objpost,{ headers: { Authorization: token }})
+        .then(()=>{setWritecomment("");setUṕdate(!update);}).catch((err)=> console.error(err))
+    }
 
     return (
         <>
+            <STYLES.DIVCONTENT>
             <STYLES.CONTENT>
                 <STYLES.LEFT>
                     <STYLES.USERIMAGE src={url} onClick={() => { navigate(`/user/${userid}`) }} />
                     <Like postId={id} userId={userid} />
+                    <STYLES.CHAT>
+                        <ChatDots size={25} color="#FFFFFF" onClick={()=>{setChatopen(!chatopen)}}/>
+                        <p>{comments.length} comments</p>
+                    </STYLES.CHAT>
                 </STYLES.LEFT>
                 <STYLES.RIGTH>
                     <STYLES.INFOS>
@@ -78,7 +104,33 @@ export default function Post({ id, content, link, url, username, userid }) {
                     </STYLES.LINK>
                 </STYLES.RIGTH>
             </STYLES.CONTENT>
-
+            {chatopen?
+            <STYLES.COMMENTSBOX>
+                {comments.length>0?
+                comments.map((item,index)=>{return <STYLES.COMMENT key={index}>
+                    <STYLES.IMGCOMMENT src={item.pictureUrl}/>
+                    <div>
+                        {item.userId===userid?<p>{item.username}<em>  •  post's author</em></p>:<p>{item.username}</p>}
+                        <p>{item.comment}</p>
+                    </div>
+                </STYLES.COMMENT>})
+                :null}
+            <STYLES.FORM onSubmit={handleForm}>
+                <STYLES.IMGCOMMENT src={url}/>
+                <STYLES.INPUT 
+                value={writecomment}
+                onChange={(e) => setWritecomment(e.target.value)}
+                type="text"
+                placeholder="write a comment..."
+                required
+                />
+                <STYLES.BUTTOM type="submit">
+                    <Cursor size={16} color="#FFFFFF"/>
+                </STYLES.BUTTOM>
+            </STYLES.FORM>
+        </STYLES.COMMENTSBOX>
+            :null}
+            </STYLES.DIVCONTENT>
         </>
     );
 }

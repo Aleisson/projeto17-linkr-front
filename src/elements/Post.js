@@ -78,12 +78,14 @@ export default function Post({ id, content, link, url, username, userid }) {
                             </STYLES.EDIT>
                         </STYLES.NAME>
 
-                        <STYLES.DESCRIPTION><Edit
+                        <STYLES.DESCRIPTION>
+                            {isEditing?
+                            <Edit
                             id={id}
                             userId={userid}
                             content={content}
                             isEditing={isEditing}
-                            changeEdit={changeEdit} />
+                            changeEdit={changeEdit} />:
                             <p>
                                 <ReactTagify
                                     tagStyle={tagStyle}
@@ -92,6 +94,7 @@ export default function Post({ id, content, link, url, username, userid }) {
                                     {content}
                                 </ReactTagify>
                             </p>
+                        }
                         </STYLES.DESCRIPTION>
                     </STYLES.INFOS>
                     <STYLES.LINK onClick={() => { openInNewTab(link) }}>

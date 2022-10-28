@@ -1,50 +1,48 @@
-//import styled from "styled-components";
-//import {useEffect, useState} from 'react';
-//import { useNavigate } from "react-router-dom";
-//import axios from "axios";
-//import {ReactTagify as Hashtag} from 'react-tagify';
-//import routes from "../backendroutes";
+import styled from "styled-components";
+import {useEffect, useState, useContext} from 'react';
+//import {Link} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import TokenContex from "../contexts/TokenContext.js";
+import routes from "../backendroutes";
 
 export default function Trending(){
-    /*const [topics, setTopics] = useState([]);
+    const {setToken} = useContext(TokenContex)
+    const [topics, setTopics] = useState([]);
     const navigate = useNavigate();
+    
 
     useEffect( () => {
         axios.get(routes.GET_HASHTAGS)
-        .then(res => {
+        .then((res) => {
             setTopics(res.data);
         })
-        .catch(error => {
-            console.log(error);
-        })
-    }, []);
-
-    function navigateHashtag(topic){
-        const trendingTopics = topic.replace("#", "");
-        navigate(`/hashtag/${trendingTopics}`);
-    }*/
-
-
-    return (
-        null
-        /*
-        <>
+        .catch((error) => {
+            if(error.response.status === 500){
+                return alert ("Não foi possível se conectar")
+            }
+        });
+    }, [setToken]);
+ 
+    //
+    return (    
         <CONTENT>
             <Title>Trending</Title>
 
             <Box>
-                {topics.length>0 ?
-                topics.map((item, index) => 
-                <Hashtag key = {item.topicId} topicClick = {topic => navigateHashtag(topic)}>
-                    {`#${item.name}`}
-                </Hashtag>
-                ) : "No hashtag found"}
+                {topics.length > 0 ? (
+                    topics.map((topic, index) => (
+                        <p key={index} onClick= {() => {navigate(`/hashtag/${topic.id}`
+                        )}}>
+                            <h2> # {topic.name}</h2>
+                            </p>
+                    ))
+                ) : (<h2>Não há tópicos ainda</h2>)}
             </Box>
         </CONTENT>
-        </>*/
     );
 }
-/*
+
 const CONTENT = styled.div`
     box-sizing: border-box;
     padding: 20px 15px;
@@ -75,4 +73,3 @@ display: flex;
 flex-direction: column;
 gap: 12px;
 `
-*/

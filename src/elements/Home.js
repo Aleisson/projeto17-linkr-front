@@ -7,36 +7,55 @@ import TokenContext from "../contexts/TokenContext";
 import { useContext, useEffect, useState } from "react";
 import routes from "../backendroutes";
 import { useParams } from "react-router-dom";
-import { deletePost } from '../services/delete.services.js';
+import InfiniteScroll from "react-infinite-scroll-component";
 
-export default function Home() {
-  const { token, setToken } = useContext(TokenContext);
-  const id = useParams().id;
-  const [posts, setPosts] = useState([]);
-  const [message, setMessage] = useState("Loading...");
-  const [inserturl, setInserturl] = useState("");
-  const [insertdesc, setInsertdesc] = useState("");
-  const [refresh, setRefresh] = useState(false);
-  const [userimage, setUserimage] = useState("");
-  const [disable, setDisable] = useState(false);
-  const [buttontext, setButtontext] = useState("Publicar");
-  useEffect(() => {
-    const tok = JSON.parse(localStorage.getItem("token"));
-    if (tok) {
-      setToken(`Bearer ${tok}`);
+export default function Home(){
+    const {token,setToken} = useContext(TokenContext);
+    const id = useParams().id;
+    const idhash = useParams().idhash;
+    const [posts,setPosts] = useState([]);
+    const [message,setMessage] = useState("Loading...");
+    const [inserturl,setInserturl] = useState("");
+    const [insertdesc,setInsertdesc] = useState("");
+    const [refresh,setRefresh] = useState(false);
+    const [userimage,setUserimage] = useState("");
+    const [disable,setDisable] = useState(false);
+    const [buttontext,setButtontext] = useState("Publicar");
+    const [page, setPage] = useState(1);
+
+      let displayPosts = posts.slice(0, (10 * page)) 
+
+    function loadMorePosts () {
+      if (displayPosts.length < posts.length) {setPage(page + 1)} else {console.log("você chegou ao fim!")}
     }
-  });
-  useEffect(() => {
-    if (token != null) {
-      if (id) {
-        axios.get(routes.GET_POSTS_BYID(id), { headers: { Authorization: token } }).then((res) => { res.data.length > 0 ? setPosts(res.data) : setMessage("There are no posts yet") })
-          .catch((err) => { console.error(err); alert("An error occured while trying to fetch the posts, please refresh the page") });
-      } else {
-        axios.get(routes.GET_POSTS, { headers: { Authorization: token } }).then((res) => { setUserimage(res.data.user[0].pictureUrl); (res.data.posts.length) > 0 ? setPosts(res.data.posts) : setMessage("There are no posts yet") })
-          .catch((err) => { console.error(err); alert("An error occured while trying to fetch the posts, please refresh the page") });
+    
+    useEffect(()=>{
+      const tok = JSON.parse(localStorage.getItem("token"));
+      if(tok){
+        setToken(`Bearer ${tok}`);
       }
-    }
-  }, [refresh, id, token]);
+    });
+    useEffect(()=>{
+        if(token != null){
+          if(id){
+            axios.get(routes.GET_POSTS_BYID(id), {headers: { Authorization: token }}).then((res)=>{res.data.length>0?setPosts(res.data):setMessage("There are no posts yet")})
+            .catch((err)=>{console.error(err);alert("An error occured while trying to fetch the posts, please refresh the page")});
+          }else if(idhash){
+            axios.get(routes.GET_HASHTAGS_BY_ID(idhash))
+            .then((res) => {
+                setPosts(res.data);
+            })
+            .catch((error) => {
+                if(error.response.status === 404) {
+                    alert ("Não foi possível se conectar")
+                }
+            })
+          }else{
+            axios.get(routes.GET_POSTS, {headers: { Authorization: token }}).then((res)=>{setUserimage(res.data.user[0].pictureUrl);(res.data.posts.length)>0?setPosts(res.data.posts):setMessage("There are no posts yet")})
+            .catch((err)=>{console.error(err);alert("An error occured while trying to fetch the posts, please refresh the page")});
+          }
+        }
+    },[refresh,id,token,idhash]);
   function handleForm(e) {
     e.preventDefault();
     setDisable(true);
@@ -78,11 +97,11 @@ export default function Home() {
       <Topbar />
       <STYLES.CONTENT>
         <STYLES.TOPTIMELINE>
-          {posts.length > 0 && id ? `${posts[0].username}'s posts` : "timeline"}
+          {posts.length > 0 && (id ? `${posts[0].username}'s posts`:(idhash? `${posts[0].name}` :"timeline"))}
         </STYLES.TOPTIMELINE>
         <STYLES.TIMELINE>
           <STYLES.POSTS>
-            {id ? null : (
+            {(id || idhash)? null : (
               <STYLES.INSERTPOST>
                 <STYLES.LEFTPOST>
                   <STYLES.USERIMAGE src={userimage} />
@@ -110,14 +129,23 @@ export default function Home() {
                       placeholder="Awesome article about #javascript"
                     />
                     <STYLES.BUTTON disabled={disable} type="submit">{buttontext}</STYLES.BUTTON>
-                  </STYLES.FORM>
-                </STYLES.RIGTHPOST>
-              </STYLES.INSERTPOST>)}
-            {posts.length > 0 ? posts.map((item, index) => { return <Post key={index} id={item.id} content={item.content} link={item.link} url={item.pictureUrl} username={item.username} userid={item.userId} handleRemove={handleRemove} index={index} /> }) : <STYLES.MESSAGE>{message}</STYLES.MESSAGE>}
-          </STYLES.POSTS>
-          <Trending />
-        </STYLES.TIMELINE>
-      </STYLES.CONTENT>
-    </>
-  );
+                    </STYLES.FORM>
+                        </STYLES.RIGTHPOST>
+                    </STYLES.INSERTPOST>)}
+                    
+                    <InfiniteScroll 
+                    dataLength={displayPosts.length} 
+                    next={loadMorePosts} 
+                    hasMore={true}>
+                    
+                    {posts.length>0?displayPosts.map((item,index)=>{return <Post key={index} id={item.id} content={item.content} link={item.link} url={item.pictureUrl} username={item.username} userid={item.userId}/>}):<STYLES.MESSAGE>{message}</STYLES.MESSAGE>}
+                    
+                    </InfiniteScroll>
+                    
+                </STYLES.POSTS>
+                <Trending/>
+            </STYLES.TIMELINE>
+        </STYLES.CONTENT>
+        </>
+    );
 }

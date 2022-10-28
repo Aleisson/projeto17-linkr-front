@@ -7,6 +7,7 @@ import TokenContext from "../contexts/TokenContext";
 import { useContext, useEffect, useState } from "react";
 import routes from "../backendroutes";
 import { useParams } from "react-router-dom";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 export default function Home(){
     const {token,setToken} = useContext(TokenContext);
@@ -19,6 +20,14 @@ export default function Home(){
     const [userimage,setUserimage] = useState("");
     const [disable,setDisable] = useState(false);
     const [buttontext,setButtontext] = useState("Publicar");
+    const [page, setPage] = useState(1);
+
+      let displayPosts = posts.slice(0, (10 * page)) 
+
+    function loadMorePosts () {
+      if (displayPosts.length < posts.length) {setPage(page + 1)} else {console.log("você chegou ao fim!")}
+    }
+    
     useEffect(()=>{
       const tok = JSON.parse(localStorage.getItem("token"));
       if(tok){
@@ -104,7 +113,16 @@ export default function Home(){
                     </STYLES.FORM>
                         </STYLES.RIGTHPOST>
                     </STYLES.INSERTPOST>)}
-                    {posts.length>0?posts.map((item,index)=>{return <Post key={index} id={item.id} content={item.content} link={item.link} url={item.pictureUrl} username={item.username} userid={item.userId}/>}):<STYLES.MESSAGE>{message}</STYLES.MESSAGE>}
+                    
+                    <InfiniteScroll 
+                    dataLength={displayPosts.length} 
+                    next={loadMorePosts} 
+                    hasMore={true}>
+                    
+                    {posts.length>0?displayPosts.map((item,index)=>{return <Post key={index} id={item.id} content={item.content} link={item.link} url={item.pictureUrl} username={item.username} userid={item.userId}/>}):<STYLES.MESSAGE>{message}</STYLES.MESSAGE>}
+                    
+                    </InfiniteScroll>
+                    
                 </STYLES.POSTS>
                 <Trending/>
             </STYLES.TIMELINE>

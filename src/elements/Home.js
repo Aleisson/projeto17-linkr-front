@@ -138,7 +138,7 @@ export default function Home() {
               next={loadMorePosts}
               hasMore={true}>
 
-              {posts.length > 0 ? displayPosts.map((item, index) => { return <Post key={index} id={item.id} content={item.content} link={item.link} url={item.pictureUrl} username={item.username} userid={item.userId} index={index} /> }) : <STYLES.MESSAGE>{message}</STYLES.MESSAGE>}
+              {posts.length > 0 ? displayPosts.map((item, index) => { return <Post key={index} id={item.id} content={item.content} link={item.link} url={item.pictureUrl} username={item.username} userid={item.userId}  handleRemove={handleRemove} index={index} /> }) : <STYLES.MESSAGE>{message}</STYLES.MESSAGE>}
 
             </InfiniteScroll>
 

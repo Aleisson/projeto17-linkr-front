@@ -12,6 +12,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 export default function Home(){
     const {token,setToken} = useContext(TokenContext);
     const id = useParams().id;
+    const idhash = useParams().idhash;
     const [posts,setPosts] = useState([]);
     const [message,setMessage] = useState("Loading...");
     const [inserturl,setInserturl] = useState("");
@@ -39,12 +40,22 @@ export default function Home(){
           if(id){
             axios.get(routes.GET_POSTS_BYID(id), {headers: { Authorization: token }}).then((res)=>{res.data.length>0?setPosts(res.data):setMessage("There are no posts yet")})
             .catch((err)=>{console.error(err);alert("An error occured while trying to fetch the posts, please refresh the page")});
+          }else if(idhash){
+            axios.get(routes.GET_HASHTAGS_BY_ID(idhash))
+            .then((res) => {
+                setPosts(res.data);
+            })
+            .catch((error) => {
+                if(error.response.status === 404) {
+                    alert ("Não foi possível se conectar")
+                }
+            })
           }else{
             axios.get(routes.GET_POSTS, {headers: { Authorization: token }}).then((res)=>{setUserimage(res.data.user[0].pictureUrl);(res.data.posts.length)>0?setPosts(res.data.posts):setMessage("There are no posts yet")})
             .catch((err)=>{console.error(err);alert("An error occured while trying to fetch the posts, please refresh the page")});
           }
         }
-    },[refresh,id,token]);
+    },[refresh,id,token,idhash]);
   function handleForm(e) {
     e.preventDefault();
     setDisable(true);
@@ -78,11 +89,11 @@ export default function Home(){
       <Topbar />
       <STYLES.CONTENT>
         <STYLES.TOPTIMELINE>
-          {posts.length > 0 && id ? `${posts[0].username}'s posts` : "timeline"}
+          {posts.length > 0 && (id ? `${posts[0].username}'s posts`:(idhash? `${posts[0].name}` :"timeline"))}
         </STYLES.TOPTIMELINE>
         <STYLES.TIMELINE>
           <STYLES.POSTS>
-            {id ? null : (
+            {(id || idhash)? null : (
               <STYLES.INSERTPOST>
                 <STYLES.LEFTPOST>
                   <STYLES.USERIMAGE src={userimage} />

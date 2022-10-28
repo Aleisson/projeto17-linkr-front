@@ -114,23 +114,6 @@ const MESSAGE = styled.div`
   color: #ffffff;
 `;
 
-const BUTTONFOLLOW = styled.div`
-  width: 112px;
-  height: 31px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-family: "Lato", sans-serif;
-  font-weight: 700;
-  font-size: 14px;
-  line-height: 17px;
-
-  color: #ffffff;
-  background: #1877f2;
-  border-radius: 5px;
-`;
-
 const STYLES = {
   CONTENT,
   TOPTIMELINE,
@@ -145,6 +128,5 @@ const STYLES = {
   INPUT,
   BUTTON,
   MESSAGE,
-  BUTTONFOLLOW,
 };
 export default STYLES;

@@ -95,7 +95,7 @@ export default function Home() {
       <STYLES.CONTENT>
         <STYLES.TOPTIMELINE>
           {posts.length > 0 && id ? `${posts[0].username}'s posts` : "timeline"}
-          {id ? <ButtonFollowUnfollow/> : "" }
+          {id ? <ButtonFollowUnfollow id={id}/> : "" }
         </STYLES.TOPTIMELINE>
 
         <STYLES.TIMELINE>

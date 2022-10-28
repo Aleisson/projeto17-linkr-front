@@ -7,8 +7,7 @@ const routes = {
     SIGN_IN: `${backend}/signin`,
     GET_HASHTAGS: `${backend}/hashtags`,
     SEARCH_USER_BY_NAME: (name)=>{return `${backend}/seachUser/${name}`},
-    GET_POSTS_BYID: (id)=>{return `${backend}/getposts/${id}`
-    
-    }
+    GET_POSTS_BYID: (id)=>{return `${backend}/getposts/${id}`},
+    FOLLOWER_BYID: (id)=>{return `${backend}/follow/${id}`}
 }
 export default routes;

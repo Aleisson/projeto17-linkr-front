@@ -86,9 +86,12 @@ export default function Home() {
   }
 
   function handleRemove(index, postId) {
-    setPosts(posts.filter((item, i) => i !== index));
+
     const promise = deletePost(postId);
-    promise.then(res => alert('Post deletado'));
+    promise.then(res => {
+      alert('Post deletado');
+      setPosts(posts.filter((item, i) => i !== index));
+    });
     promise.catch(res => alert('Erro deleção'));
   }
 
@@ -138,7 +141,7 @@ export default function Home() {
               next={loadMorePosts}
               hasMore={true}>
 
-              {posts.length > 0 ? displayPosts.map((item, index) => { return <Post key={index} id={item.id} content={item.content} link={item.link} url={item.pictureUrl} username={item.username} userid={item.userId}  handleRemove={handleRemove} index={index} /> }) : <STYLES.MESSAGE>{message}</STYLES.MESSAGE>}
+              {posts.length > 0 ? displayPosts.map((item, index) => { return <Post key={index} id={item.id} content={item.content} link={item.link} url={item.pictureUrl} username={item.username} userid={item.userId} handleRemove={handleRemove} index={index} /> }) : <STYLES.MESSAGE>{message}</STYLES.MESSAGE>}
 
             </InfiniteScroll>
 

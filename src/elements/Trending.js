@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import {useEffect, useState, useContext} from 'react';
-import {Link} from "react-router-dom";
-//import { useNavigate } from "react-router-dom";
+//import {Link} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import TokenContex from "../contexts/TokenContext.js";
 import routes from "../backendroutes";
@@ -9,7 +9,7 @@ import routes from "../backendroutes";
 export default function Trending(){
     const {setToken} = useContext(TokenContex)
     const [topics, setTopics] = useState([]);
-    //const navigate = useNavigate();
+    const navigate = useNavigate();
     
 
     useEffect( () => {
@@ -23,12 +23,8 @@ export default function Trending(){
             }
         });
     }, [setToken]);
-    console.log(topics);
-    console.log(setTopics);
-
-    
-
-
+ 
+    //
     return (    
         <CONTENT>
             <Title>Trending</Title>
@@ -36,9 +32,10 @@ export default function Trending(){
             <Box>
                 {topics.length > 0 ? (
                     topics.map((topic, index) => (
-                        <Link to={`/hashtag/${topic.name}`} key={index}>
+                        <p onClick= {() => {navigate(`/hashtag/${topic.name}`
+                        )}}>
                             <h2> # {topic.name}</h2>
-                        </Link>
+                            </p>
                     ))
                 ) : (<h2>Não há tópicos ainda</h2>)}
             </Box>

@@ -6,16 +6,17 @@ import TokenContext from '../contexts/TokenContext.js';
 import { useContext } from 'react';
 import axios from 'axios';
 import routes from '../backendroutes.js';
-
+import styled from 'styled-components';
 
 export default function Hashtag(){
 
     const [topics, setTopics] = useState([]);
     const {hashtag} = useParams();
     const {token, setToken} = useContext(TokenContext);
+   
 
     useEffect(() => {
-        axios.get(routes.GET_HASHTAGS_BY_ID)
+        axios.get(routes.GET_HASHTAGS_BY_ID(hashtag))
         .then((res) => {
             setTopics(res.data);
         })
@@ -26,6 +27,22 @@ export default function Hashtag(){
         })
     }, [hashtag, token, setToken]);
     return (
-        <h1>Sou a página de hashtags</h1>
-    )
+        <Page>
+            <Topbar/>
+            <Title>#{hashtag}</Title>
+            {topics.length !== 0 ? (
+                topics.map((hash, index) => (
+                    <Post/>
+                ))
+            ) : (
+                <p>"Não foi possível carregar os posts"</p>
+            )}    
+        </Page>
+    );
 }
+
+const Title = styled.div`
+`;
+
+const Page = styled.div`
+`;

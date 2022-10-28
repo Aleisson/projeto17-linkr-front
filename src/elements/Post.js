@@ -10,7 +10,7 @@ import { ReactTagify } from "react-tagify";
 import { Edit } from './Edit/Edit.js';
 import axios from "axios";
 import TokenContext from "../contexts/TokenContext.js";
-export default function Post({ id, content, link, url, username, userid }) {
+export default function Post({ id, content, link, url, username, userid, index, handleRemove }) {
     const {token} = useContext(TokenContext);
     const [image, setImage] = useState(Object);
     const [info, setInfo] = useState(Object);

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import ReactTooltip from "react-tooltip";
 import { CustomBsFillHeart, CustomBsHeart, StyledDiv, TextLike } from './style/like.Style.js';
-import * as services from '../../services/linkr.Services.js';
+import * as services from '../../services/likes.Services.js';
 
 
 function Like({ postId, userId }) {

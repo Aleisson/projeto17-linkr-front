@@ -7,7 +7,7 @@ const CONTENT = styled.div`
   min-height: calc(100vh - 72px);
   height: fit-content;
   margin-top: 72px;
-  padding: 0 16.66% 0 16.66%;
+  padding: 0 16.66% 16px 16.66%;
 `;
 const TOPTIMELINE = styled.div`
   display: flex;
@@ -37,7 +37,7 @@ const INSERTPOST = styled.div`
   display: flex;
   height: 210px;
   width: 100%;
-  margin: 0 0 30px 0;
+  margin: 0 0 14px 0;
   padding: 18px 18px 18px 18px;
   background-color: #ffffff;
   border-radius: 15px;

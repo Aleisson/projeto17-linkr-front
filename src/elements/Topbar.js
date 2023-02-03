@@ -10,34 +10,40 @@ import TokenContext from "../contexts/TokenContext";
 import routes from "../backendroutes";
 
 export default function Topbar() {
-  const {token} = useContext(TokenContext);
+  const { token } = useContext(TokenContext);
   const [name, setName] = useState("");
   const [users, setUsers] = useState([]);
   const [isOpenLogOut, setIsOpenLogOut] = useState(false);
-  const [profilePic, setProfilePic] = useState('');
+  const [profilePic, setProfilePic] = useState("");
   const navigate = useNavigate();
-  
-  function openLogOut () {
-   if (isOpenLogOut) {
-    setIsOpenLogOut(false)
-   } else {
-    setIsOpenLogOut(true)
-   }
+
+  function openLogOut() {
+    if (isOpenLogOut) {
+      setIsOpenLogOut(false);
+    } else {
+      setIsOpenLogOut(true);
+    }
   }
 
-  function logOut () {
-    openLogOut()
+  function logOut() {
+    openLogOut();
     localStorage.clear();
-    navigate("/")
+    navigate("/");
   }
   useEffect(() => {
-    if(token){
-      axios.get(routes.GET_POSTS, {headers: { Authorization: token }}).then((res)=>{setProfilePic(res.data.user[0].pictureUrl)})
-      .catch((err)=>{console.error(err)});
+    if (token) {
+      axios
+        .get(routes.GET_POSTS, { headers: { Authorization: token } })
+        .then((res) => {
+          setProfilePic(res.data.user[0].pictureUrl);
+        })
+        .catch((err) => {
+          console.error(err);
+        });
     }
- },[token]);
+  }, [token]);
   useEffect(() => {
-    if(name.length > 2){
+    if (name.length > 2) {
       const promise = axios.get(routes.SEARCH_USER_BY_NAME(name));
 
       promise.then((res) => {
@@ -49,7 +55,6 @@ export default function Topbar() {
         console.log(err.response.data);
       });
     }
-
   }, [name]);
 
   function ReturnListUsers() {
@@ -59,7 +64,14 @@ export default function Topbar() {
           {users.map((user, i) => {
             const { id, username, pictureUrl } = user;
             return (
-              <li key={i} id = {id} onClick={() => { navigate(`/user/${id}`);setName("") }}>
+              <li
+                key={i}
+                id={id}
+                onClick={() => {
+                  navigate(`/user/${id}`);
+                  setName("");
+                }}
+              >
                 <img src={pictureUrl} alt={name} />
                 <p>{username}</p>
               </li>
@@ -74,32 +86,46 @@ export default function Topbar() {
   return (
     <>
       <STYLES.CONTENT>
-      <img src={logo} alt="" onClick={()=>{navigate("/timeline")}}/>
-
-      <div>
-        <DebounceInput
-          value={name}
-          type="text"
-          placeholder="Search for people..."
-          user="user"
-          minLength={3}
-          debounceTimeout={300}
-          onChange={(e) => setName(e.target.value)}
+        <img
+          src={logo}
+          alt=""
+          onClick={() => {
+            navigate("/timeline");
+          }}
         />
-        <GoSearch />
-        {users.length > 0 ? <ReturnListUsers /> : ""}
-      </div>
 
-      <STYLES.USER onClick={openLogOut}>
-        {!isOpenLogOut ? <IoIosArrowDown onClick={openLogOut}/> : <IoIosArrowUp onClick={openLogOut}/>}
         <div>
-          <img src={profilePic} alt="foto perfil" onClick={openLogOut} />
+          <DebounceInput
+            value={name}
+            type="text"
+            placeholder="Search for people..."
+            user="user"
+            minLength={3}
+            debounceTimeout={300}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <GoSearch />
+          {users.length > 0 ? <ReturnListUsers /> : ""}
         </div>
-      </STYLES.USER>
-    </STYLES.CONTENT>
-    {isOpenLogOut ? <STYLES.LogOut>
-    <h1 onClick={logOut}>Logout</h1>
-    </STYLES.LogOut> : ''}
+
+        <STYLES.USER onClick={openLogOut}>
+          {!isOpenLogOut ? (
+            <IoIosArrowDown onClick={openLogOut} />
+          ) : (
+            <IoIosArrowUp onClick={openLogOut} />
+          )}
+          <div>
+            <img src={profilePic} alt="foto perfil" onClick={openLogOut} />
+          </div>
+        </STYLES.USER>
+      </STYLES.CONTENT>
+      {isOpenLogOut ? (
+        <STYLES.LogOut>
+          <h1 onClick={logOut}>Logout</h1>
+        </STYLES.LogOut>
+      ) : (
+        ""
+      )}
     </>
   );
 }

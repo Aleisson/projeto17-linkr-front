@@ -12,7 +12,7 @@ const CONTENT = styled.div`
 const TOPTIMELINE = styled.div`
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   height: 160px;
   width: 100%;
   font-family: "Oswald", sans-serif;
@@ -115,18 +115,18 @@ const MESSAGE = styled.div`
 `;
 
 const STYLES = {
-    CONTENT: CONTENT,
-    TOPTIMELINE: TOPTIMELINE,
-    TIMELINE: TIMELINE,
-    POSTS: POSTS,
-    INSERTPOST: INSERTPOST,
-    LEFTPOST: LEFTPOST,
-    RIGTHPOST: RIGTHPOST,
-    USERIMAGE: USERIMAGE,
-    INSERTPOSTMESSAGE: INSERTPOSTMESSAGE,
-    FORM: FORM,
-    INPUT: INPUT,
-    BUTTON: BUTTON,
-    MESSAGE: MESSAGE
-}
+  CONTENT,
+  TOPTIMELINE,
+  TIMELINE,
+  POSTS,
+  INSERTPOST,
+  LEFTPOST,
+  RIGTHPOST,
+  USERIMAGE,
+  INSERTPOSTMESSAGE,
+  FORM,
+  INPUT,
+  BUTTON,
+  MESSAGE,
+};
 export default STYLES;

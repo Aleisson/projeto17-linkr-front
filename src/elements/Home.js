@@ -7,6 +7,7 @@ import TokenContext from "../contexts/TokenContext";
 import { useContext, useEffect, useState } from "react";
 import routes from "../backendroutes";
 import { useParams } from "react-router-dom";
+
 import InfiniteScroll from "react-infinite-scroll-component";
 import { deletePost } from '../services/delete.services.js';
 export default function Home() {
@@ -28,7 +29,7 @@ export default function Home() {
   function loadMorePosts() {
     if (displayPosts.length < posts.length) { setPage(page + 1) } else { console.log("você chegou ao fim!") }
   }
-
+  
   useEffect(() => {
     const tok = JSON.parse(localStorage.getItem("token"));
     if (tok) {
@@ -38,6 +39,7 @@ export default function Home() {
   useEffect(() => {
     if (token != null) {
       if (id) {
+
         axios.get(routes.GET_POSTS_BYID(id), { headers: { Authorization: token } }).then((res) => { res.data.length > 0 ? setPosts(res.data) : setMessage("There are no posts yet") })
           .catch((err) => { console.error(err); alert("An error occured while trying to fetch the posts, please refresh the page") });
       } else if (idhash) {
@@ -56,6 +58,7 @@ export default function Home() {
       }
     }
   }, [refresh, id, token, idhash]);
+
   function handleForm(e) {
     e.preventDefault();
     setDisable(true);
@@ -85,6 +88,7 @@ export default function Home() {
       });
   }
 
+
   function handleRemove(index, postId) {
 
     const promise = deletePost(postId);
@@ -102,6 +106,7 @@ export default function Home() {
         <STYLES.TOPTIMELINE>
           {posts.length > 0 && (id ? `${posts[0].username}'s posts` : (idhash ? `${posts[0].name}` : "timeline"))}
         </STYLES.TOPTIMELINE>
+
         <STYLES.TIMELINE>
           <STYLES.POSTS>
             {(id || idhash) ? null : (
@@ -131,6 +136,7 @@ export default function Home() {
                       type="text"
                       placeholder="Awesome article about #javascript"
                     />
+
                     <STYLES.BUTTON disabled={disable} type="submit">{buttontext}</STYLES.BUTTON>
                   </STYLES.FORM>
                 </STYLES.RIGTHPOST>
@@ -144,7 +150,7 @@ export default function Home() {
               {posts.length > 0 ? displayPosts.map((item, index) => { return <Post key={index} id={item.id} content={item.content} link={item.link} url={item.pictureUrl} username={item.username} userid={item.userId} handleRemove={handleRemove} index={index} /> }) : <STYLES.MESSAGE>{message}</STYLES.MESSAGE>}
 
             </InfiniteScroll>
-
+            
           </STYLES.POSTS>
           <Trending />
         </STYLES.TIMELINE>
